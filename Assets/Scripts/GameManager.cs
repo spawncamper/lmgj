@@ -12,18 +12,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] Text messageText;
     private bool gameWon = false;
     private bool roundEnded = false;
-    Timer timer;
     
     public delegate void RoundStarted();
     public static event RoundStarted RoundStartedEvent;
 
     public delegate void GameWon();
     public static event GameWon GameWonEvent;
-
-    private void OnEnable()
-    {
-        timer = GetComponent<Timer>();
-    }
 
     void Start()
     {
@@ -59,7 +53,6 @@ public class GameManager : MonoBehaviour
 //        PlayBackgroundMusic();
 
         player.transform.position = playerInitialPosition.position;
-        timer.ResetTimer();
         roundEnded = false;
 
         yield return new WaitForSeconds(endWaitTime);
@@ -73,15 +66,12 @@ public class GameManager : MonoBehaviour
         {
             movePlayer.MovePlayer();
 
-            timer.UpdateTimer();
-
             yield return null;
         }
     }
 
     IEnumerator RoundEnding()
     {
-        timer.ResetTimer();
 
         yield return endWaitTime;
     }

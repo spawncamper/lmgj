@@ -6,7 +6,7 @@ public class FollowPath : MonoBehaviour
     float speed = 5.0f;
     float accuracy = 1.0f;
     float rotSpeed = 2.0f;
-    GameObject wpManager;
+    [SerializeField] GameObject wpManager;
     GameObject[] waypoints;
     GameObject currentNode;
     int currentWP = 0;
@@ -18,8 +18,6 @@ public class FollowPath : MonoBehaviour
         waypoints = wpManager.GetComponent<WPManager>().waypoints;
         graph = wpManager.GetComponent<WPManager>().graph;
         currentNode = waypoints[7];
-
-        Debug.Log(graph.getPathLength());
     }
 
     void LateUpdate() 
@@ -52,6 +50,8 @@ public class FollowPath : MonoBehaviour
 
     public void GoToWayPoint()
     {
+        print("button clicked");
+        
         // Use the AStar method passing it currentNode and distination
         graph.AStar(currentNode, waypoints[targetWaypoint]);
         // Reset index

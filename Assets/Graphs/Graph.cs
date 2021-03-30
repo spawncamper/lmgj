@@ -40,15 +40,6 @@ public class Graph
         }
     }
 
-    public void GoBehindHeli()
-    {
-
-        // Use the AStar method passing it currentNode and distination
-        g.AStar(currentNode, wps[11]);
-        // Reset index
-        currentWP = 0;
-    }
-
     Node findNode(GameObject id) 
     {
         foreach (Node n in nodes) 
