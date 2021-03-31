@@ -12321,6 +12321,10 @@ PrefabInstance:
       propertyPath: wpManager
       value: 
       objectReference: {fileID: 84600534}
+    - target: {fileID: 8156069917306848060, guid: 235b83ad67fa52a42b7b3a4bc0cd2dc3, type: 3}
+      propertyPath: targetWaypoint
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8156069917306848063, guid: 235b83ad67fa52a42b7b3a4bc0cd2dc3, type: 3}
       propertyPath: m_RootOrder
       value: 7
