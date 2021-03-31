@@ -1,60 +1,133 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
 
 public class FollowPath : MonoBehaviour 
 {
-    Transform goal;
-    float speed = 5.0f;
-    float accuracy = 1.0f;
-    float rotSpeed = 2.0f;
-    [SerializeField] GameObject wpManager;
-    GameObject[] waypoints;
-    GameObject currentNode;
-    int currentWP = 0;
-    Graph graph;
+    [SerializeField] float speed = 5.0f;
+    [SerializeField] float accuracy = 1.0f;
+    [SerializeField] float rotSpeed = 2.0f;
+    [SerializeField] GameObject waypointManager;
+    [SerializeField] int waypointRouteLength;
+    [SerializeField] bool shouldMove = true;
     [SerializeField] int targetWaypoint;
+    [SerializeField] float chaseDistance = 10;
+    [SerializeField] float suspicionTime = 2f;
+    [SerializeField] float attackSpeed = 5f;
+    [SerializeField] float patrolSpeed = 3f;
+
+    GameObject player;
+    NavMeshAgent agent;
+    GameObject[] levelWaypoints;
+    List<Transform> currentWaypointPath;
+    GameObject currentNode;
+
+    float distanceToPlayer;
+    int currentWP = 0;
+    int currentWaypointIndex;
 
     void Start() 
     {
-        waypoints = wpManager.GetComponent<WPManager>().waypoints;
-        graph = wpManager.GetComponent<WPManager>().graph;
-        currentNode = waypoints[7];
+        levelWaypoints = waypointManager.GetComponent<WPManager>().waypoints;
+        player = GameObject.FindWithTag("Player");
     }
 
-    void LateUpdate() 
+    private void Update()
     {
-        if (graph.getPathLength() == 0 || currentWP == graph.getPathLength())
-            return;
-
-        currentNode = graph.getPathPoint(currentWP);
-
-        if (Vector3.Distance(
-            graph.getPathPoint(currentWP).transform.position,
-            transform.position) < accuracy) {
-            currentWP++;
-        }
-
-        if (currentWP < graph.getPathLength()) {
-            goal = graph.getPathPoint(currentWP).transform;
-            Vector3 lookAtGoal = new Vector3(goal.position.x,
-                                            this.transform.position.y,
-                                            goal.position.z);
-            Vector3 direction = lookAtGoal - this.transform.position;
-
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
-                                                    Quaternion.LookRotation(direction),
-                                                    Time.deltaTime * rotSpeed);
-
-            this.transform.Translate(0, 0, speed * Time.deltaTime);
+        if (this.shouldMove) 
+        { 
+            FindDistanceToPlayerAndAttack(); 
         }
     }
 
-    public void GoToWayPoint()
+    void FindDistanceToPlayerAndAttack()
     {
-        print("button clicked");
-        
-        // Use the AStar method passing it currentNode and distination
-        graph.AStar(currentNode, waypoints[targetWaypoint]);
-        // Reset index
-        currentWP = 0;
+        if (player != null)
+        {
+            distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+
+            if (distanceToPlayer <= chaseDistance)
+            {
+                ChasePlayer();
+            }
+
+            else if (distanceToPlayer > chaseDistance)
+            {
+                PatrolState();
+            }
+        }
+    }
+
+    void ChasePlayer()
+    {
+        agent.speed = attackSpeed;
+
+        if (agent.enabled)
+        {
+            agent.isStopped = false;
+            agent.SetDestination(player.transform.position);
+        }
+    }
+
+    void PatrolState()
+    {
+        agent.speed = patrolSpeed;
+        Vector3 nextPosition = GetCurrentWaypointPosition(currentWaypointIndex);
+        StartMovement(nextPosition);
+
+        if (AtWaypoint())
+        {
+            SetNextWaypoint();
+        }
+    }
+
+    void SetNextWaypoint()
+    {
+        int nextWaypointIndex = CycleWaypoint(currentWaypointIndex);
+        currentWaypointIndex = nextWaypointIndex;
+    }
+
+    public int CycleWaypoint(int waypointIndex)   //  this needs to go into the PatrolPath.cs
+    {
+        if (waypointIndex <= (GetChildCount() - 2))
+        {
+            waypointIndex++;
+        }
+        else if (waypointIndex == (GetChildCount() - 1))
+        {
+            waypointIndex = 0;
+        }
+        return waypointIndex;
+    }
+
+    Vector3 GetCurrentWaypointPosition(int wayPointIndex)
+    {
+        return transform.GetChild(wayPointIndex).transform;
+    }
+
+    void StartMovement(Vector3 destination)
+    {
+        if (agent.enabled)
+        {
+            agent.isStopped = false;
+            agent.SetDestination(destination);
+        }
+    }
+
+    private bool AtWaypoint()
+    {
+        if (!agent.pathPending && agent != null)
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                {
+                    return true;
+                }
+                else return false;
+            }
+            else return false;
+        }
+        else return false;
     }
 }
