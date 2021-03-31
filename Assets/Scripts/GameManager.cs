@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject player;
-    [SerializeField] Transform playerInitialPosition;
+ //   [SerializeField] Transform playerInitialPosition;
     [SerializeField] float endWaitTime = 0.5f;
     [SerializeField] ClickToMove movePlayer;
     [SerializeField] AudioManager audioManager;
@@ -52,7 +52,8 @@ public class GameManager : MonoBehaviour
     {
 //        PlayBackgroundMusic();
 
-        player.transform.position = playerInitialPosition.position;
+ //       player.transform.position = playerInitialPosition.position;
+ 
         roundEnded = false;
 
         yield return new WaitForSeconds(endWaitTime);
