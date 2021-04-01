@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour
     IEnumerator EnemyControllerLoop()
     {
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        destination = transform.position;  //  зачем?
+ //       destination = transform.position;  //  зачем?
 
         if (waypoints.Length == 0)
         {

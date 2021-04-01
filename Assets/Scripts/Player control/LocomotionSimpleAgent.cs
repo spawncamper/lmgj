@@ -14,7 +14,8 @@ public class LocomotionSimpleAgent : MonoBehaviour {
 		agent.updatePosition = false;
 	}
 	
-	void Update () {
+	void Update () 
+	{
 		Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
 
 		// Map 'worldDeltaPosition' to local space
@@ -50,7 +51,8 @@ public class LocomotionSimpleAgent : MonoBehaviour {
 //			agent.nextPosition = transform.position + 0.9f*worldDeltaPosition;
 	}
 
-	void OnAnimatorMove () {
+	void OnAnimatorMove () 
+	{
 		// Update postion to agent position
 //		transform.position = agent.nextPosition;
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ClickEffec : MonoBehaviour
+public class ClickEffect : MonoBehaviour
 {
     [SerializeField] ParticleSystem onClickEffect;
     [SerializeField] float destructionDelay = 1f;
