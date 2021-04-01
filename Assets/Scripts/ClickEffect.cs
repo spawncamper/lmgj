@@ -1,17 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ClickEffect : MonoBehaviour
+public class ClickEffec : MonoBehaviour
 {
     [SerializeField] ParticleSystem onClickEffect;
-
+    [SerializeField] float destructionDelay = 1f;
 
     public void PlayClickEffect(Vector3 ClickPoint)
     {
         ParticleSystem clickEffect;
         clickEffect = Instantiate(onClickEffect, ClickPoint, Quaternion.identity);
 
-        Destroy(clickEffect, 1f);
+        Destroy(clickEffect, destructionDelay);
     }
 }

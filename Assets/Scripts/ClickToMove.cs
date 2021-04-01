@@ -20,15 +20,23 @@ public class ClickToMove : MonoBehaviour
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
 			if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
-			{ 
-				agent.destination = hitInfo.point;
+			{
+				MoveAgent();
 
-
-                ParticleSystem clickEffect;
-                clickEffect = Instantiate(onClickEffect, hitInfo.point, Quaternion.identity);
-                Destroy(clickEffect.gameObject, 1f);
-
+				OnClickEffect();
             }
 		}
+	}
+
+	void MoveAgent()
+    {
+		agent.destination = hitInfo.point;
+	}
+
+	void OnClickEffect()
+    {
+		ParticleSystem clickEffect;
+		clickEffect = Instantiate(onClickEffect, hitInfo.point, Quaternion.identity);
+		Destroy(clickEffect.gameObject, 1f);
 	}
 }
