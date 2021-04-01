@@ -1893,9 +1893,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1246623118319705022}
   - component: {fileID: 1246623118326936668}
-  - component: {fileID: 1246623118271468347}
   - component: {fileID: 1246623118271468344}
   - component: {fileID: 1246623118271468350}
+  - component: {fileID: 6393754235081933160}
   - component: {fileID: 1246623118271468351}
   m_Layer: 0
   m_Name: Player
@@ -1939,19 +1939,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1246623118271468347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246623118319667102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a46474afa933c4fe2bd3e7cce2c3c72b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onClickEffect: {fileID: 198927480420149238, guid: b395d5d6eb4b4b846acc021ee036b744, type: 3}
 --- !u!195 &1246623118271468344
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1986,6 +1973,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66fa8e4f2f6284241a0134cab40bcba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6393754235081933160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246623118319667102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45c1a5be0a56eba4bbd16d597c9b7e1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onClickEffect: {fileID: 0}
 --- !u!114 &1246623118271468351
 MonoBehaviour:
   m_ObjectHideFlags: 0
