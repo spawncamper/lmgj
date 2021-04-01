@@ -32,7 +32,7 @@ public class FollowPath : MonoBehaviour
         player = GameObject.FindWithTag("Player");
     }
 
-    private void Update()
+  /*  private void Update()
     {
         if (this.shouldMove) 
         { 
@@ -40,7 +40,7 @@ public class FollowPath : MonoBehaviour
         }
     }
 
-    void FindDistanceToPlayerAndAttack()
+ /*   void FindDistanceToPlayerAndAttack()
     {
         if (player != null)
         {
@@ -56,7 +56,7 @@ public class FollowPath : MonoBehaviour
                 PatrolState();
             }
         }
-    }
+    } */
 
     void ChasePlayer()
     {
@@ -68,7 +68,7 @@ public class FollowPath : MonoBehaviour
             agent.SetDestination(player.transform.position);
         }
     }
-
+    /*
     void PatrolState()
     {
         agent.speed = patrolSpeed;
@@ -81,7 +81,7 @@ public class FollowPath : MonoBehaviour
         }
     }
 
-    void SetNextWaypoint()
+   /* void SetNextWaypoint()
     {
         int nextWaypointIndex = CycleWaypoint(currentWaypointIndex);
         currentWaypointIndex = nextWaypointIndex;
@@ -103,7 +103,7 @@ public class FollowPath : MonoBehaviour
     Vector3 GetCurrentWaypointPosition(int wayPointIndex)
     {
         return transform.GetChild(wayPointIndex).transform;
-    }
+    } */
 
     void StartMovement(Vector3 destination)
     {
