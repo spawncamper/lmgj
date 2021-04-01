@@ -4,12 +4,15 @@
 [RequireComponent (typeof (Animator))]
 public class LocomotionSimpleAgent : MonoBehaviour 
 {
+	[SerializeField] bool isPlayer;
+
 	Animator anim;
 	UnityEngine.AI.NavMeshAgent agent;
 	Vector2 smoothDeltaPosition = Vector2.zero;
 	Vector2 velocity = Vector2.zero;
 
-	void Start () {
+	void Start () 
+	{
 		anim = GetComponent<Animator> ();
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent> ();
 		agent.updatePosition = false;
@@ -36,20 +39,21 @@ public class LocomotionSimpleAgent : MonoBehaviour
 
 		// Update animation parameters
 		anim.SetBool("move", shouldMove);
-		anim.SetFloat ("velx", velocity.x);
-		anim.SetFloat ("vely", velocity.y);
+		anim.SetFloat("velx", velocity.x);
+		anim.SetFloat("vely", velocity.y);
 
-		LookAt lookAt = GetComponent<LookAt> ();
-		if (lookAt)
-			lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
+		// Update animation parameters		
+		//		LookAt lookAt = GetComponent<LookAt> ();
+		//		if (lookAt)
+		//			lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
 
-//		// Pull character towards agent
-//		if (worldDeltaPosition.magnitude > agent.radius)
-//			transform.position = agent.nextPosition - 0.9f*worldDeltaPosition;
+		//		// Pull character towards agent
+		//		if (worldDeltaPosition.magnitude > agent.radius)
+		//			transform.position = agent.nextPosition - 0.9f*worldDeltaPosition;
 
-//		// Pull agent towards character
-//		if (worldDeltaPosition.magnitude > agent.radius)
-//			agent.nextPosition = transform.position + 0.9f*worldDeltaPosition;
+		//		// Pull agent towards character
+		//		if (worldDeltaPosition.magnitude > agent.radius)
+		//			agent.nextPosition = transform.position + 0.9f*worldDeltaPosition;
 	}
 
 	void OnAnimatorMove () 
