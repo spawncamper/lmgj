@@ -9,7 +9,8 @@ public class ClickToMove : MonoBehaviour
     RaycastHit hitInfo = new RaycastHit();
 	UnityEngine.AI.NavMeshAgent agent;
 
-
+	public delegate void MouseClick();
+	public static event MouseClick MouseClickEvent;
 
 	void Start () 
 	{
@@ -25,7 +26,10 @@ public class ClickToMove : MonoBehaviour
 			{
 				MoveAgent();
 
-				OnClickEffect();
+				if (MouseClickEvent != null)
+					MouseClickEvent();
+
+//				OnClickEffect();
             }
 		}
 	}

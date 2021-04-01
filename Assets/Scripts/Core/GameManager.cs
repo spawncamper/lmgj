@@ -16,9 +16,6 @@ public class GameManager : MonoBehaviour
     public delegate void RoundStarted();
     public static event RoundStarted RoundStartedEvent;
 
-    public delegate void Tick();
-    public static event Tick TickEvent;
-
     public delegate void GameWon();
     public static event GameWon GameWonEvent;
 

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 
@@ -5,31 +6,35 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] Transform[] waypoints;
+    [SerializeField] float computationDelay = 0.5f;
     public float ReachDistance;
     private string state = "idle";
     private Vector3 destination;
     private Vector3[] PointsMemory;
     private int memoryIndex;
 
- //   enum Days { idle, thinking, Clearing memory, Tue, Wed, Thu, Fri };
-
+ //   enum Days { idle, thinking, roaming };
     UnityEngine.AI.NavMeshAgent agent;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    IEnumerator Start()
+    {        
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         destination = transform.position;
 
         if (waypoints.Length == 0)
         {
             Debug.LogError("No waypoints set - idle");
+            
             state = "idle";
+            yield return StartCoroutine(IdleCoroutine());
         }
         else
         {
             state = "thinking";
+            yield return StartCoroutine(ThinkingState());
         }
+
         string pointsText = "";
         for (int i = 0; i < waypoints.Length; i++)
         {
@@ -37,45 +42,68 @@ public class EnemyController : MonoBehaviour
         }
         Debug.Log(pointsText);
 
-        //очищаем память
         if(waypoints.Length > 0)
         {
             ClearMemory();
         }
 
+        state = "thinking";
+        yield return StartCoroutine(ThinkingState());
+
+        state = "roaming";
+        yield return StartCoroutine(RoamingState());
     }
 
-    void Update()
+    IEnumerator ThinkingState()
     {
-        if(state == "thinking")
+        if (state == "thinking")
         {
-            if(memoryIndex == 0)
+            if (memoryIndex == 0)
             {
-                StartMemory();
+                print("start memory");
+                StartCoroutine(StartMemory());
             }
-            else if(memoryIndex > 0 && memoryIndex < waypoints.Length)
+            else if (memoryIndex > 0 && memoryIndex < waypoints.Length)
             {
-                FillMemory();                
+                FillMemory();
             }
             else
             {
                 ClearMemory();
             }
 
-         agent.destination = destination;
+            agent.destination = destination;
+
             state = "roaming";
+            yield return StartCoroutine(RoamingState());
+            print("roaming");
         }
 
-        if (state == "roaming")
-        {
-            if(agent.remainingDistance < ReachDistance)
-            {
-                state = "thinking";
-            }
-        }
+        yield return new WaitForSeconds(computationDelay);
     }
 
-    void StartMemory()
+    IEnumerator RoamingState()
+    {
+        if (state == "roaming")
+        {
+            if (agent.remainingDistance < ReachDistance)
+            {
+                state = "thinking";
+                print("roaming");
+                yield return StartCoroutine(ThinkingState());
+            }
+        }
+
+        yield return new WaitForSeconds(computationDelay);
+    }
+
+    IEnumerator IdleCoroutine()
+    {
+        print("idle");
+        yield return new WaitForSeconds(computationDelay);
+    }
+
+    IEnumerator StartMemory()
     {
         Debug.Log("Starting memory");
         //выбираем первую точку в качестве цели, записываем ее в память.
@@ -84,6 +112,8 @@ public class EnemyController : MonoBehaviour
         PointsMemory[0] = waypoints[wptIndex].position;
         destination = PointsMemory[0];
         memoryIndex++;
+
+        yield return null;
     }
 
     void FillMemory()
