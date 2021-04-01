@@ -9,6 +9,8 @@ public class ClickToMove : MonoBehaviour
     RaycastHit hitInfo = new RaycastHit();
 	UnityEngine.AI.NavMeshAgent agent;
 
+
+
 	void Start () 
 	{
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent> ();
