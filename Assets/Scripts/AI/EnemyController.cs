@@ -118,7 +118,7 @@ public class EnemyController : MonoBehaviour
         destination = PointsMemory[0];
         memoryIndex++;
 
-        yield return null;
+        yield return new WaitForSeconds(computationDelay);
     }
 
     void FillMemory()
