@@ -4,23 +4,37 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject player;
+//    [SerializeField] GameObject player;
  //   [SerializeField] Transform playerInitialPosition;
     [SerializeField] float endWaitTime = 0.5f;
     [SerializeField] ClickToMove movePlayer;
     [SerializeField] AudioManager audioManager;
     [SerializeField] Text messageText;
+    [SerializeField] GameObject playerPrefab;
+    ClickToMove playerMove;
     private bool gameWon = false;
     private bool roundEnded = false;
     
     public delegate void RoundStarted();
     public static event RoundStarted RoundStartedEvent;
 
+    public delegate void PlayerSpawned();
+    public static event PlayerSpawned PlayerSpawnedEvent;
+
     public delegate void GameWon();
     public static event GameWon GameWonEvent;
 
     void Start()
     {
+        SpawnCorePrefabs();
+
+        playerMove = FindObjectOfType<ClickToMove>();
+
+        if (playerMove == null)
+        {
+            Debug.LogError("playerMove is Null");
+        }
+
         StartCoroutine(GameLoop());
     }
 
@@ -50,10 +64,14 @@ public class GameManager : MonoBehaviour
 
     IEnumerator RoundStarting()
     {
-//        PlayBackgroundMusic();
+        print("Round starting");
+        
+        //        PlayBackgroundMusic();
 
- //       player.transform.position = playerInitialPosition.position;
- 
+        //       player.transform.position = playerInitialPosition.position;
+
+
+
         roundEnded = false;
 
         yield return new WaitForSeconds(endWaitTime);
@@ -61,11 +79,13 @@ public class GameManager : MonoBehaviour
 
     IEnumerator RoundPlaying()
     {
-//        scorer = FindObjectOfType<Scorer>();
+
+        print("Round playing");
+        //        scorer = FindObjectOfType<Scorer>();
 
         while (roundEnded == false)
         {
-            movePlayer.MovePlayer();
+            playerMove.MovePlayer();
 
             yield return null;
         }
@@ -73,7 +93,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator RoundEnding()
     {
-
+        print("Round Ending");
         yield return endWaitTime;
     }
 
@@ -88,5 +108,14 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(endWaitTime * 2);
 
         StartCoroutine(GameLoop());
+    }
+
+    void SpawnCorePrefabs()
+    {
+        GameObject persistentObjects = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        DontDestroyOnLoad(persistentObjects);
+
+        if (PlayerSpawnedEvent != null)
+            PlayerSpawnedEvent();
     }
 }
