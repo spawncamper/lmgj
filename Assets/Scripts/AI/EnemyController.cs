@@ -18,41 +18,45 @@ public class EnemyController : MonoBehaviour
     UnityEngine.AI.NavMeshAgent agent;
 
     // Start is called before the first frame update
-    IEnumerator Start()
-    {        
+    void Start()
+    {
+        StartCoroutine(EnemyControllerLoop());
+    }
+
+    IEnumerator EnemyControllerLoop()
+    {
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         destination = transform.position;  //  зачем?
 
         if (waypoints.Length == 0)
         {
             Debug.LogError("No waypoints set - idle");
-            
+
             state = "idle";
             yield return StartCoroutine(IdleCoroutine());
         }
-        else
-        {
-            state = "thinking";
-            yield return StartCoroutine(ThinkingState());
-        }
 
-        string pointsText = "";
-        for (int i = 0; i < waypoints.Length; i++)
-        {
-            pointsText += " i:" + i + "  vector:" + waypoints[i].position.ToString("F3") +";    ";
-        }
-        Debug.Log(pointsText);
-
-        if(waypoints.Length > 0)
+        if (waypoints.Length > 0)
         {
             ClearMemory();
         }
+
+        /*    string pointsText = "";
+             for (int i = 0; i < waypoints.Length; i++)
+             {
+                 pointsText += " i:" + i + "  vector:" + waypoints[i].position.ToString("F3") +";    ";
+             }
+             Debug.Log(pointsText); */
+
+
 
         state = "thinking";
         yield return StartCoroutine(ThinkingState());
 
         state = "roaming";
         yield return StartCoroutine(RoamingState());
+
+        StartCoroutine(EnemyControllerLoop());
     }
 
     IEnumerator ThinkingState()
