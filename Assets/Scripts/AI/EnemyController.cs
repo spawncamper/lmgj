@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float computationDelay = 0.5f;
     public float ReachDistance;
     private string state = "idle";
+    bool isIdle = false;
     private Vector3 destination;
     private Vector3[] PointsMemory;
     private int memoryIndex;
@@ -20,7 +21,7 @@ public class EnemyController : MonoBehaviour
     IEnumerator Start()
     {        
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        destination = transform.position;
+        destination = transform.position;  //  зачем?
 
         if (waypoints.Length == 0)
         {
@@ -100,7 +101,11 @@ public class EnemyController : MonoBehaviour
     IEnumerator IdleCoroutine()
     {
         print("idle");
-        yield return new WaitForSeconds(computationDelay);
+
+        while (state == "idle")
+        {
+            yield return new WaitForSeconds(computationDelay);
+        }
     }
 
     IEnumerator StartMemory()
