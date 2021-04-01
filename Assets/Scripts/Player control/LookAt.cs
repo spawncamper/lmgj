@@ -1,9 +1,9 @@
 ﻿// LookAt.cs
 using UnityEngine;
-using System.Collections;
 
 [RequireComponent (typeof (Animator))]
-public class LookAt : MonoBehaviour {
+public class LookAt : MonoBehaviour 
+{
 	public Transform head = null;
 	public Vector3 lookAtTargetPosition;
 	public float lookAtCoolTime = 0.2f;
@@ -22,6 +22,7 @@ public class LookAt : MonoBehaviour {
 			enabled = false;
 			return;
 		}
+
 		anim = GetComponent<Animator> ();
 		lookAtTargetPosition = head.position + transform.forward;
 		lookAtPosition = lookAtTargetPosition;

@@ -2,7 +2,8 @@
 
 [RequireComponent (typeof (UnityEngine.AI.NavMeshAgent))]
 [RequireComponent (typeof (Animator))]
-public class LocomotionSimpleAgent : MonoBehaviour {
+public class LocomotionSimpleAgent : MonoBehaviour 
+{
 	Animator anim;
 	UnityEngine.AI.NavMeshAgent agent;
 	Vector2 smoothDeltaPosition = Vector2.zero;
@@ -54,11 +55,11 @@ public class LocomotionSimpleAgent : MonoBehaviour {
 	void OnAnimatorMove () 
 	{
 		// Update postion to agent position
-//		transform.position = agent.nextPosition;
+		transform.position = agent.nextPosition;
 
 		// Update position based on animation movement using navigation surface height
-		Vector3 position = anim.rootPosition;
-		position.y = agent.nextPosition.y;
-		transform.position = position;
+//		Vector3 position = anim.rootPosition;
+//		position.y = agent.nextPosition.y;
+//		transform.position = position;
 	}
 }
