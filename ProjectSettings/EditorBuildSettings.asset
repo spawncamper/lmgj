@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MITCH_Sandbox Yume.unity
+    guid: 4790ba489919fb147a381ae4e0117f23
   m_configObjects: {}

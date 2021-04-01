@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -12,6 +10,8 @@ public class EnemyController : MonoBehaviour
     private Vector3 destination;
     private Vector3[] PointsMemory;
     private int memoryIndex;
+
+ //   enum Days { idle, thinking, Clearing memory, Tue, Wed, Thu, Fri };
 
     UnityEngine.AI.NavMeshAgent agent;
 
@@ -40,14 +40,7 @@ public class EnemyController : MonoBehaviour
         //очищаем память
         if(waypoints.Length > 0)
         {
-            PointsMemory = new Vector3[waypoints.Length];
-            memoryIndex = 0;
-            Debug.Log("Clearing memory");
-            for (int i = 0; i < PointsMemory.Length; i++)
-            {
-                PointsMemory.SetValue(new Vector3(0, 0, 0), i);
-            }
-
+            ClearMemory();
         }
 
     }
@@ -59,56 +52,15 @@ public class EnemyController : MonoBehaviour
         {
             if(memoryIndex == 0)
             {
-                Debug.Log("Starting memory");
-                //выбираем первую точку в качестве цели, записываем ее в память.
-                int wptIndex = Random.Range(0, waypoints.Length-1);
-                Debug.Log("Starting point index = " + wptIndex + "   vector3 = " + waypoints[wptIndex].position.ToString("F3"));
-                PointsMemory[0] = waypoints[wptIndex].position;
-                destination = PointsMemory[0];
-                memoryIndex++;
+                StartMemory();
             }
             else if(memoryIndex > 0 && memoryIndex < waypoints.Length)
             {
-                Debug.Log("Filling memory");
-                int wptIndex = Random.Range(0, waypoints.Length-1);
-                int stopper = 0;
-                for (int i = 0; i <= PointsMemory.Length; i++)
-                {
-                    if(PointsMemory[i] != waypoints[wptIndex].position && PointsMemory[i] != new Vector3(0, 0, 0))
-                    {
-                        PointsMemory[memoryIndex] = waypoints[wptIndex].position;
-                        destination = waypoints[wptIndex].position;
-                        memoryIndex++;
-                        break;
-                    }
-
-                    //если по какой-то причине случился облом во всех итерациях генерим новую случайную точку
-                    if(i == waypoints.Length)
-                    {
-                        wptIndex = Random.Range(0, waypoints.Length -1);
-                        i = 0;
-                    }
-
-                    stopper++; //если что-то пошло не так
-                    if(stopper > 1000)
-                    {
-                        Debug.LogError("Error thinking - idle");
-                        state = "idle";
-                        break;
-                    }
-
-                }
+                FillMemory();                
             }
             else
             {
-                //очищаем память
-                memoryIndex = 0;
-                Debug.Log("Clearing memory");
-                for (int i=0; i < PointsMemory.Length; i++)
-                {
-                    PointsMemory.SetValue(new Vector3(0, 0, 0), i);
-                }
-                
+                ClearMemory();
             }
 
          agent.destination = destination;
@@ -120,10 +72,65 @@ public class EnemyController : MonoBehaviour
             if(agent.remainingDistance < ReachDistance)
             {
                 state = "thinking";
-
             }
         }
+    }
 
+    void StartMemory()
+    {
+        Debug.Log("Starting memory");
+        //выбираем первую точку в качестве цели, записываем ее в память.
+        int wptIndex = Random.Range(0, waypoints.Length - 1);
+        Debug.Log("Starting point index = " + wptIndex + "   vector3 = " + waypoints[wptIndex].position.ToString("F3"));
+        PointsMemory[0] = waypoints[wptIndex].position;
+        destination = PointsMemory[0];
+        memoryIndex++;
+    }
 
+    void FillMemory()
+    {
+        Debug.Log("Filling memory");
+
+        int wptIndex = Random.Range(0, waypoints.Length - 1);
+        int stopper = 0;
+
+        for (int i = 0; i <= PointsMemory.Length; i++)
+        {
+            if (PointsMemory[i] != waypoints[wptIndex].position && PointsMemory[i] != new Vector3(0, 0, 0))
+            {
+                PointsMemory[memoryIndex] = waypoints[wptIndex].position;
+                destination = waypoints[wptIndex].position;
+                memoryIndex++;
+                break;
+            }
+
+            //если по какой-то причине случился облом во всех итерациях генерим новую случайную точку
+            if (i == waypoints.Length)
+            {
+                wptIndex = Random.Range(0, waypoints.Length - 1);
+                i = 0;
+            }
+
+            stopper++; //если что-то пошло не так
+            if (stopper > 1000)
+            {
+                Debug.LogError("Error thinking - idle");
+                state = "idle";
+                break;
+            }
+
+        }
+    }
+
+    void ClearMemory()
+    {
+        PointsMemory = new Vector3[waypoints.Length];
+
+        memoryIndex = 0;
+        Debug.Log("Clearing memory");
+        for (int i = 0; i < PointsMemory.Length; i++)
+        {
+            PointsMemory.SetValue(new Vector3(0, 0, 0), i);
+        }
     }
 }
