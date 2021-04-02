@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] string mainMenu;
     [SerializeField] string bootScene;
     [SerializeField] float delay = 0.5f;
+    [SerializeField] TMP_Text writeToText;
     [SerializeField] TMP_Text scoreText;
     Score score;
     SceneLoader sceneLoader;
@@ -102,5 +103,10 @@ public class UIManager : MonoBehaviour
         currentScore = score.GetScore();
 
         scoreText.text = currentScore.ToString();
+    }
+
+    void WriteToTetmeshpro(string inputString)
+    {
+        scoreText.text = inputString.ToString();
     }
 }

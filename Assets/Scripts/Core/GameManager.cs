@@ -89,7 +89,10 @@ public class GameManager : MonoBehaviour
 
         while (roundEnded == false)
         {
-            playerMove.MovePlayer();
+            if (playerMove != null)
+            {
+                playerMove.MovePlayer();
+            }
 
             yield return null;
         }
@@ -104,7 +107,10 @@ public class GameManager : MonoBehaviour
 
         var playerInstance = FindObjectOfType<PlayerClass>();
 
-        Destroy(playerInstance);
+        if (playerInstance != null)
+        {
+            Destroy(playerInstance);
+        }
 
         yield return endWaitTime;
     }
@@ -125,10 +131,13 @@ public class GameManager : MonoBehaviour
 
     void SpawnPlayer()
     {
-        GameObject playerInstance = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity) as GameObject;
-        playerInstance.transform.parent = gameObject.transform;
+        if (playerPrefab != null)
+        {
+            GameObject playerInstance = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity) as GameObject;
+            playerInstance.transform.parent = gameObject.transform;
 
-        if (PlayerSpawnedEvent != null)
-            PlayerSpawnedEvent();
+            if (PlayerSpawnedEvent != null)
+                PlayerSpawnedEvent();
+        }
     }
 }
