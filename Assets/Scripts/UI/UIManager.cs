@@ -32,7 +32,10 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        
         sceneLoader = FindObjectOfType<SceneLoader>();
+
+        coinController = FindObjectOfType<CoinController>();
 
         //       activeScene = SceneManager.GetActiveScene().name;
 

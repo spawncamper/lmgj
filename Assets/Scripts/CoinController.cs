@@ -4,7 +4,8 @@ public class CoinController : MonoBehaviour
 {
     GameObject metal;
     [SerializeField] int initialCoins = 3;
-    [SerializeField] GameObject coin;
+    [SerializeField] GameObject coinPrefab;
+    GameManager gameManager;
     int currentCoins;
 
 //    public delegate void CoinSpawned();
@@ -20,14 +21,15 @@ public class CoinController : MonoBehaviour
         {
             if (currentCoins >= 1)
             {
-                Vector3 CoinPosition = new Vector3(transform.position.x, 0.65f, transform.position.z);
-                Instantiate(coin, CoinPosition, Quaternion.identity);
-                coin.transform.parent = gameObject.transform;
-
                 if (ScoreChangedEvent != null)
                     ScoreChangedEvent();
 
                 currentCoins--;
+
+                Vector3 CoinPosition = new Vector3(transform.position.x, 0.65f, transform.position.z);
+
+                GameObject cointInstance = Instantiate(coinPrefab, CoinPosition, Quaternion.identity) as GameObject;
+                cointInstance.transform.parent = gameManager.transform;
             }
             else
             {
@@ -43,6 +45,8 @@ public class CoinController : MonoBehaviour
 
         if (ScoreChangedEvent != null)
             ScoreChangedEvent();
+
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     public void AddCoins(int number)
