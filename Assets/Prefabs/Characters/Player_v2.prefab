@@ -1538,7 +1538,6 @@ GameObject:
   - component: {fileID: 7459914783283053796}
   - component: {fileID: 1598502416023848105}
   - component: {fileID: 1946837455997332599}
-  - component: {fileID: 6544367398151213852}
   - component: {fileID: -6527625270525361372}
   m_Layer: 0
   m_Name: Player_v2
@@ -1708,19 +1707,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6544367398151213852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2059385399315570601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 542cad44d6451ec47835574ac003e6c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coin: {fileID: 6395726071627537933, guid: 7c230414c9919f846b1eeac9800cf415, type: 3}
 --- !u!114 &-6527625270525361372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1733,6 +1719,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a11c011821fb47e43b7ca212b45d094f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialCoins: 3
+  coin: {fileID: 0}
 --- !u!1 &2059385399315570603
 GameObject:
   m_ObjectHideFlags: 0
