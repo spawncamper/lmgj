@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] string bootScene;
     [SerializeField] float delay = 0.5f;
     [SerializeField] TMP_Text scoreText;
+    [SerializeField] TMP_Text tutorialText;
 
     SceneLoader sceneLoader;
     CoinController coinController;
@@ -109,7 +110,14 @@ public class UIManager : MonoBehaviour
 
     public void WriteToTextmeshPro(string inputString)
     {
-        scoreText.text = inputString.ToString();
+        if (tutorialText != null)
+        {
+            tutorialText.text = inputString.ToString();
+        }
+        else
+        {
+            Debug.LogError("[UIManager] tutorialText is null + gameObject " + gameObject.name);
+        }
     }
 
     void FindObjectOfTypeCoinController()
