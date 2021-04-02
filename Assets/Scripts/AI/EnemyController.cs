@@ -21,12 +21,14 @@ public class EnemyController : MonoBehaviour
 
     UnityEngine.AI.NavMeshAgent agent;
 
+    public delegate void PlayerDeath();
+    public static event PlayerDeath PlayerDeathEvent;
+
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         destination = transform.position;
-
 
         GameObject[] wptList = GameObject.FindGameObjectsWithTag("waypoint");
         if (wptList.Length > 0)
@@ -105,32 +107,42 @@ public class EnemyController : MonoBehaviour
         Debug.Log("PlayerSpotted!");
       
         state = "kill";
+
         if (!player)
         {
             agent.SetDestination(Player.gameObject.transform.position);
             player = Player.gameObject;
             agent.speed = agent.speed * 2;
         }
-        gameObject.GetComponentInChildren<SightController>().SetMode("disabled"); //отключаем зрение, пока гонимс€ за √√
-       
 
+        gameObject.GetComponentInChildren<SightController>().SetMode("disabled"); //отключаем зрение, пока гонимс€ за √√
     }
 
 
     // Update is called once per frame
     void Update()
     {
-
-        if(state == "kill")
+        if (!GameManager.isPlayerDead)
         {
-            if(agent.remainingDistance < 0.5f)
+            UpdateEnemyControllerFSM();
+        }
+    }
+
+    void UpdateEnemyControllerFSM()
+    {
+        if (state == "kill")
+        {
+            if (agent.remainingDistance < 0.5f)
             {
-                print("GAME OVER!");
-                Destroy(player, 0.5f); //вместо этого вызова нужен метод на герое дл€ смерти.
+                print("[EnemyController] state == kill, player death");
+
                 state = "idle";
                 agent.isStopped = true;
+
+                if (PlayerDeathEvent != null)
+                    PlayerDeathEvent();
             }
-            if(agent.remainingDistance > 20f)
+            if (agent.remainingDistance > 20f)
             {
                 agent.SetDestination(transform.position); //останавливаем погоню
                 state = "thinking";
@@ -138,7 +150,7 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        if(state == "greed")
+        if (state == "greed")
         {
             //Debug.DrawLine(agent.transform.position, treasure.transform.position, Color.yellow);
             if (agent.remainingDistance < 0.5f) //вз€ли монетку
@@ -149,7 +161,7 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        if(state == "LookingForMore")
+        if (state == "LookingForMore")
         {
             //gameObject.GetComponent<SightController>().SetMode("wide"); //включаем зрение в широкий режим
             gameObject.GetComponentInChildren<SightController>().SetMode("wide"); //включаем зрение в широкий режим
@@ -159,26 +171,26 @@ public class EnemyController : MonoBehaviour
 
 
 
-        if(state == "thinking")
+        if (state == "thinking")
         {
-            if(memoryIndex == 0)
+            if (memoryIndex == 0)
             {
                 Debug.Log("Starting memory");
                 //выбираем первую точку в качестве цели, записываем ее в пам€ть.
-                int wptIndex = Random.Range(0, waypoints.Length-1);
+                int wptIndex = Random.Range(0, waypoints.Length - 1);
                 Debug.Log("Starting point index = " + wptIndex + "   vector3 = " + waypoints[wptIndex].position.ToString("F3"));
                 PointsMemory[0] = waypoints[wptIndex].position;
                 destination = PointsMemory[0];
                 memoryIndex++;
             }
-            else if(memoryIndex > 0 && memoryIndex < waypoints.Length)
+            else if (memoryIndex > 0 && memoryIndex < waypoints.Length)
             {
                 Debug.Log("Filling memory");
-                int wptIndex = Random.Range(0, waypoints.Length-1);
+                int wptIndex = Random.Range(0, waypoints.Length - 1);
                 int stopper = 0;
                 for (int i = 0; i < PointsMemory.Length; i++)
                 {
-                    if(PointsMemory[i] != waypoints[wptIndex].position && PointsMemory[i] != new Vector3(0, 0, 0))
+                    if (PointsMemory[i] != waypoints[wptIndex].position && PointsMemory[i] != new Vector3(0, 0, 0))
                     {
                         PointsMemory[memoryIndex] = waypoints[wptIndex].position;
                         destination = waypoints[wptIndex].position;
@@ -187,14 +199,14 @@ public class EnemyController : MonoBehaviour
                     }
 
                     //если по какой-то причине случилс€ облом во всех итераци€х генерим новую случайную точку
-                    if(i == waypoints.Length)
+                    if (i == waypoints.Length)
                     {
-                        wptIndex = Random.Range(0, waypoints.Length -1);
+                        wptIndex = Random.Range(0, waypoints.Length - 1);
                         i = 0;
                     }
 
                     stopper++; //если что-то пошло не так
-                    if(stopper > 1000)
+                    if (stopper > 1000)
                     {
                         Debug.LogError("Error thinking - idle");
                         state = "idle";
@@ -208,27 +220,25 @@ public class EnemyController : MonoBehaviour
                 //очищаем пам€ть
                 memoryIndex = 0;
                 Debug.Log("Clearing memory");
-                for (int i=0; i < PointsMemory.Length; i++)
+                for (int i = 0; i < PointsMemory.Length; i++)
                 {
                     PointsMemory.SetValue(new Vector3(0, 0, 0), i);
                 }
-                
+
             }
 
-         agent.destination = destination;
+            agent.destination = destination;
             state = "roaming";
         }
 
         if (state == "roaming")
         {
-            if(agent.remainingDistance < ReachDistance)
+            if (agent.remainingDistance < ReachDistance)
             {
                 state = "thinking";
 
             }
         }
-
-
     }
 
     IEnumerator LookingAround()
@@ -238,6 +248,7 @@ public class EnemyController : MonoBehaviour
         Debug.Log("LookingAround coroutine!");
         yield return new WaitForSeconds(LookingAroundDelay);
         Debug.Log(state);
+
         if (state == "greed")
         {
             Debug.Log("Coroutine state changed to greed!");
@@ -251,9 +262,6 @@ public class EnemyController : MonoBehaviour
             state = "thinking";
         }
         agent.isStopped = false;
-
-
-
     }
 
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     private bool roundEnded = false;
     bool isMusicOn = true;
 
+    public static bool isPlayerDead = true;
+
     public delegate void RoundStarted();
     public static event RoundStarted RoundStartedEvent;
 
@@ -32,6 +34,16 @@ public class GameManager : MonoBehaviour
 
     public delegate void GameWon();
     public static event GameWon GameWonEvent;
+
+    void OnEnable()
+    {
+        EnemyController.PlayerDeathEvent += PlayerDeath;
+    }
+
+    void OnDisable()
+    {
+        EnemyController.PlayerDeathEvent -= PlayerDeath;
+    }
 
     void Start()
     {
@@ -65,6 +77,8 @@ public class GameManager : MonoBehaviour
     {        
         print("Round starting");
 
+        isPlayerDead = true;
+
         if (playIntro)
         {
             yield return StartCoroutine(TutorialCoroutine());
@@ -72,11 +86,15 @@ public class GameManager : MonoBehaviour
 
         SpawnPlayer();
 
+        isPlayerDead = false;
+
         playerMove = FindObjectOfType<ClickToMove>();
 
         if (playerMove == null)
         {
             Debug.LogError("playerMove is Null");
+
+            isPlayerDead = true;
         }
 
         //        PlayBackgroundMusic();
@@ -97,6 +115,8 @@ public class GameManager : MonoBehaviour
         print("Round playing");
         //        scorer = FindObjectOfType<Scorer>();
 
+        isPlayerDead = false;
+
         while (roundEnded == false)
         {
             if (playerMove != null)
@@ -115,6 +135,8 @@ public class GameManager : MonoBehaviour
         if (RoundEndedEvent != null)
             RoundEndedEvent();
 
+        isPlayerDead = false;
+
         var playerInstance = FindObjectOfType<PlayerClass>();
 
         if (playerInstance != null)
@@ -129,6 +151,8 @@ public class GameManager : MonoBehaviour
     {
         // messageText.text = "YOU WON";
         //        audioManager.PlayGameWonMusic();
+
+        isPlayerDead = true;
 
         roundEnded = true;
         gameWon = false;
@@ -148,7 +172,17 @@ public class GameManager : MonoBehaviour
 
             if (PlayerSpawnedEvent != null)
                 PlayerSpawnedEvent();
+
+            isPlayerDead = false;
         }
+    }
+
+    void PlayerDeath()
+    {
+        // Game over text
+        print("[GameManager] PlayerDeath");
+        isPlayerDead = true;
+        roundEnded = true;
     }
 
     public void ToggleMusic()
