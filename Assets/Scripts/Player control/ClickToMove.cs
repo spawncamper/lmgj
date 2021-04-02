@@ -45,12 +45,9 @@ public class ClickToMove : MonoBehaviour
 
 	void OnClickEffect(GameObject clickTarget)
     {
-		if (clickTarget.transform.gameObject.layer == LayerMask.NameToLayer("clickableGround"))
-		{
 			ParticleSystem clickEffect;
 			clickEffect = Instantiate(onClickEffect, hitInfo.point, Quaternion.identity);
 			Destroy(clickEffect.gameObject, 1f);
 			//		yield return new WaitForSeconds(delay);
-		}
 	}
 }
