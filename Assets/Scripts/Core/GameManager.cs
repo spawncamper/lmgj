@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     AudioManager audioManager;
     ClickToMove playerMove;
+    UIManager UIManager;
     private bool gameWon = false;
     private bool roundEnded = false;
     bool isMusicOn = true;
@@ -166,9 +167,12 @@ public class GameManager : MonoBehaviour
 
     IEnumerator TutorialCoroutine()
     {
-        messageText.text = "Welcome to RAGE OF RICHES";
+        UIManager = FindObjectOfType<UIManager>();
+
+        UIManager.WriteToTextmeshPro("Welcome to RAGE OF RICHES");
         yield return new WaitForSeconds(messageTextTimerDelay);
-        messageText.text = "AVOID THE ROBBERS";
+
+   /*     messageText.text = "AVOID THE ROBBERS";
         yield return new WaitForSeconds(messageTextTimerDelay);
         messageText.text = "DROP COINS AS BAIT";
         yield return new WaitForSeconds(messageTextTimerDelay);
@@ -178,6 +182,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(messageTextTimerDelay);
         messageText.text = "HAVE FUN";
         yield return new WaitForSeconds(messageTextTimerDelay);
-        messageText.text = string.Empty;
+        messageText.text = string.Empty; */
     }
 }

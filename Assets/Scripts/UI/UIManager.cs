@@ -107,7 +107,7 @@ public class UIManager : MonoBehaviour
         scoreText.text = currentCoins.ToString();
     }
 
-    void WriteToTextmeshpro(string inputString)
+    public void WriteToTextmeshPro(string inputString)
     {
         scoreText.text = inputString.ToString();
     }
