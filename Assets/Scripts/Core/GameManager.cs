@@ -92,6 +92,11 @@ public class GameManager : MonoBehaviour
     IEnumerator RoundEnding()
     {
         print("Round Ending");
+
+        var playerInstance = FindObjectOfType<PlayerClass>();
+
+        Destroy(playerInstance);
+
         yield return endWaitTime;
     }
 
@@ -112,6 +117,7 @@ public class GameManager : MonoBehaviour
     void SpawnPlayer()
     {
         GameObject playerInstance = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        playerInstance.transform.parent = gameObject.transform;
 
         if (PlayerSpawnedEvent != null)
             PlayerSpawnedEvent();

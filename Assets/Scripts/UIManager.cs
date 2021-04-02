@@ -29,31 +29,8 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             print("press Esc");
-            
-            loadedScenes = sceneLoader.GetOpenScenes();
 
-            foreach (Scene scene in loadedScenes)
-            {
-                activeScene = scene.name;
-
-                print(activeScene);
-
-                if (activeScene == bootScene)
-                {
-                    continue;
-                }
-
-                if (activeScene == mainMenu)
-                {
-                    continue;
-                }
-
-                Debug.Log("[UIManager] Update loop, foreach Scene scene in loadedScenes");
-
-                StartCoroutine(GoToMainMenu());
-
-                break;
-            }
+            GoToMainMenu();
         }
     }
 
@@ -68,7 +45,35 @@ public class UIManager : MonoBehaviour
         sceneLoader.QuitGame();
     }
 
-    IEnumerator GoToMainMenu()
+    void GoToMainMenu()
+    {
+        loadedScenes = sceneLoader.GetOpenScenes();
+
+        foreach (Scene scene in loadedScenes)
+        {
+            activeScene = scene.name;
+
+            print(activeScene);
+
+            if (activeScene == bootScene)
+            {
+                continue;
+            }
+
+            if (activeScene == mainMenu)
+            {
+                continue;
+            }
+
+            Debug.Log("[UIManager] Update loop, foreach Scene scene in loadedScenes");
+
+            StartCoroutine(GoToMainMenuCoroutine());
+
+            break;
+        }
+    }
+
+    IEnumerator GoToMainMenuCoroutine()
     {
         sceneLoader.LoadLevelAsync(mainMenu);
         yield return new WaitForSeconds(delay);

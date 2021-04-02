@@ -170,6 +170,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1647016940513218630, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -301
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647016940513218630, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -2
+      objectReference: {fileID: 0}
     - target: {fileID: 1647016940935430209, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -205,6 +213,14 @@ PrefabInstance:
     - target: {fileID: 1647016940935430209, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647016940935430210, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 286
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647016940935430210, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 1647016941033601129, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
       propertyPath: m_Pivot.x
@@ -316,3 +332,4 @@ MonoBehaviour:
   Level01: GameScene01
   mainMenu: MainMenu
   bootScene: BootScene
+  delay: 0.5
