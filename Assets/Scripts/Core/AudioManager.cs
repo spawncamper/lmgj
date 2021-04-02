@@ -9,21 +9,25 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioClip mouseClickSound;
     [SerializeField] AudioClip coinTossSound;
     [SerializeField] float audioBlendTime = 0.5f;
+
     AudioSource mainAudioSource;
 
     void OnEnable()
     {
         ClickToMove.MouseClickEvent += PlayMouseClickSound;
+        CoinController.CoinSpawnedEvent += PlayCoinSound;
     }
 
     void OnDisable()
     {
         ClickToMove.MouseClickEvent -= PlayMouseClickSound;
+        CoinController.CoinSpawnedEvent -= PlayCoinSound;
     }
 
     void Start()
     {
         mainAudioSource = GetComponent<AudioSource>();
+
         mainAudioSource.loop = true;
 
         StartCoroutine(PlayBackgroundMusicCoroutine());
@@ -75,6 +79,11 @@ public class AudioManager : MonoBehaviour
     {
         mainAudioSource.PlayOneShot(gameWonMusic, 1f);
         yield return new WaitForSeconds(gameWonMusic.length * 3);
+    }
+
+    public void PlayCoinSound()
+    {
+        mainAudioSource.PlayOneShot(coinTossSound, 1f);
     }
 
     public void StopMusic()

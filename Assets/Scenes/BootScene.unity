@@ -172,8 +172,8 @@ MonoBehaviour:
   gameOverMusic: {fileID: 0}
   gameWonMusic: {fileID: 0}
   mouseClickSound: {fileID: 8300000, guid: 2a22c6b9a7d972c4680bb9fcd555e454, type: 3}
+  coinTossSound: {fileID: 8300000, guid: 856bc72efbf0cfe41b3cd17553a6a22d, type: 3}
   audioBlendTime: 0.5
-  mainAudioSource: {fileID: 1988447187}
 --- !u!114 &1988447186
 MonoBehaviour:
   m_ObjectHideFlags: 0

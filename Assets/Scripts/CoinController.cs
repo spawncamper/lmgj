@@ -8,8 +8,8 @@ public class CoinController : MonoBehaviour
     GameManager gameManager;
     int currentCoins;
 
-//    public delegate void CoinSpawned();
-//    public static event CoinSpawned CoinSpawnedEvent;
+    public delegate void CoinSpawned();
+    public static event CoinSpawned CoinSpawnedEvent;
 
     public delegate void ScoreChanged();
     public static event ScoreChanged ScoreChangedEvent;
@@ -23,6 +23,9 @@ public class CoinController : MonoBehaviour
             {
                 if (ScoreChangedEvent != null)
                     ScoreChangedEvent();
+
+                if (CoinSpawnedEvent != null)
+                    CoinSpawnedEvent();
 
                 currentCoins--;
 

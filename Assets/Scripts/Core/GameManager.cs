@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -11,10 +12,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject playerPrefab;
     [SerializeField] Transform playerSpawnPoint;
     [SerializeField] bool playIntro = true;
+    [SerializeField] TMP_Text tutorialText;
 
     AudioManager audioManager;
     ClickToMove playerMove;
-    UIManager UIManager;
+
     private bool gameWon = false;
     private bool roundEnded = false;
     bool isMusicOn = true;
@@ -167,21 +169,20 @@ public class GameManager : MonoBehaviour
 
     IEnumerator TutorialCoroutine()
     {
-        UIManager = FindObjectOfType<UIManager>();
-
-        UIManager.WriteToTextmeshPro("Welcome to RAGE OF RICHES");
-        yield return new WaitForSeconds(messageTextTimerDelay);
-
-   /*     messageText.text = "AVOID THE ROBBERS";
-        yield return new WaitForSeconds(messageTextTimerDelay);
-        messageText.text = "DROP COINS AS BAIT";
-        yield return new WaitForSeconds(messageTextTimerDelay);
-        messageText.text = "GOOD LUCK";
-        yield return new WaitForSeconds(messageTextTimerDelay);
-        messageText.text = "...";
-        yield return new WaitForSeconds(messageTextTimerDelay);
-        messageText.text = "HAVE FUN";
-        yield return new WaitForSeconds(messageTextTimerDelay);
-        messageText.text = string.Empty; */
+        tutorialText.text = "HELLO ADVENTURER!";
+        yield return new WaitForSeconds(messageTextTimerDelay * 0.75f);
+        tutorialText.text = "WELCOME TO RAGE OF RICHES";
+        yield return new WaitForSeconds(messageTextTimerDelay * 0.75f);
+        tutorialText.text = "AVOID THE ROBBERS";
+        yield return new WaitForSeconds(messageTextTimerDelay * 0.75f);
+        tutorialText.text = "DROP COINS AS BAIT";
+        yield return new WaitForSeconds(messageTextTimerDelay * 0.50f);
+        tutorialText.text = "GOOD LUCK";
+        yield return new WaitForSeconds(messageTextTimerDelay * 0.25f);
+        tutorialText.text = "...";
+        yield return new WaitForSeconds(messageTextTimerDelay * 0.25f);
+        tutorialText.text = "HAVE FUN";
+        yield return new WaitForSeconds(messageTextTimerDelay * 0.25f);
+        tutorialText.text = string.Empty; 
     }
 }
