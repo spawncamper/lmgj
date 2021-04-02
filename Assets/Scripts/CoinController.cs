@@ -22,6 +22,7 @@ public class CoinController : MonoBehaviour
             {
                 Vector3 CoinPosition = new Vector3(transform.position.x, 0.65f, transform.position.z);
                 Instantiate(coin, CoinPosition, Quaternion.identity);
+                coin.transform.parent = gameObject.transform;
 
                 if (ScoreChangedEvent != null)
                     ScoreChangedEvent();
