@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     ClickToMove playerMove;
     private bool gameWon = false;
     private bool roundEnded = false;
-    
+
     public delegate void RoundStarted();
     public static event RoundStarted RoundStartedEvent;
 
@@ -26,15 +26,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        SpawnCorePrefabs();
-
-        playerMove = FindObjectOfType<ClickToMove>();
-
-        if (playerMove == null)
-        {
-            Debug.LogError("playerMove is Null");
-        }
-
         StartCoroutine(GameLoop());
     }
 
@@ -63,14 +54,21 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator RoundStarting()
-    {
+    {        
         print("Round starting");
-        
+
+        SpawnPlayer();
+
+        playerMove = FindObjectOfType<ClickToMove>();
+
+        if (playerMove == null)
+        {
+            Debug.LogError("playerMove is Null");
+        }
+
         //        PlayBackgroundMusic();
 
         //       player.transform.position = playerInitialPosition.position;
-
-
 
         roundEnded = false;
 
@@ -110,7 +108,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameLoop());
     }
 
-    void SpawnCorePrefabs()
+
+    void SpawnPlayer()
     {
         GameObject playerInstance = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
         DontDestroyOnLoad(playerInstance);
