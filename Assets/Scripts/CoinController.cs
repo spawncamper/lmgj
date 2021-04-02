@@ -5,6 +5,8 @@ using UnityEngine;
 public class CoinController : MonoBehaviour
 {
     GameObject metal;
+    [SerializeField] int initialCoins = 3;
+
     // Start is called before the first frame update
     void Start()
     {
