@@ -31,8 +31,8 @@ public class ClickToMove : MonoBehaviour
 			if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity, layerMask))
 			{
 				print(hitInfo.transform.gameObject.name);
-				
-				MoveAgent();
+
+				agent.destination = hitInfo.point;
 
 				if (MouseClickEvent != null)
 					MouseClickEvent();
@@ -42,10 +42,6 @@ public class ClickToMove : MonoBehaviour
 		}
 	}
 
-	void MoveAgent()
-    {
-		agent.destination = hitInfo.point;
-	}
 
 	void OnClickEffect(GameObject clickTarget)
     {
