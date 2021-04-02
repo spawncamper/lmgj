@@ -7,10 +7,10 @@ public class GameManager : MonoBehaviour
 //    [SerializeField] GameObject player;
  //   [SerializeField] Transform playerInitialPosition;
     [SerializeField] float endWaitTime = 0.5f;
-    [SerializeField] ClickToMove movePlayer;
     [SerializeField] AudioManager audioManager;
     [SerializeField] Text messageText;
     [SerializeField] GameObject playerPrefab;
+
     ClickToMove playerMove;
     private bool gameWon = false;
     private bool roundEnded = false;
@@ -112,8 +112,8 @@ public class GameManager : MonoBehaviour
 
     void SpawnCorePrefabs()
     {
-        GameObject persistentObjects = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-        DontDestroyOnLoad(persistentObjects);
+        GameObject playerInstance = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        DontDestroyOnLoad(playerInstance);
 
         if (PlayerSpawnedEvent != null)
             PlayerSpawnedEvent();
