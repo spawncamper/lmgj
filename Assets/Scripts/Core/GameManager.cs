@@ -112,7 +112,6 @@ public class GameManager : MonoBehaviour
     void SpawnPlayer()
     {
         GameObject playerInstance = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-        DontDestroyOnLoad(playerInstance);
 
         if (PlayerSpawnedEvent != null)
             PlayerSpawnedEvent();
