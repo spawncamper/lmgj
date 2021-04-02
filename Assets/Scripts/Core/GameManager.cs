@@ -7,9 +7,10 @@ public class GameManager : MonoBehaviour
 //    [SerializeField] GameObject player;
  //   [SerializeField] Transform playerInitialPosition;
     [SerializeField] float endWaitTime = 0.5f;
-    [SerializeField] Text messageText;
+    [SerializeField] float messageTextTimerDelay = 2f;
     [SerializeField] GameObject playerPrefab;
     [SerializeField] Transform playerSpawnPoint;
+    [SerializeField] bool playIntro = true;
 
     AudioManager audioManager;
     ClickToMove playerMove;
@@ -60,6 +61,11 @@ public class GameManager : MonoBehaviour
     IEnumerator RoundStarting()
     {        
         print("Round starting");
+
+        if (playIntro)
+        {
+            yield return StartCoroutine(TutorialCoroutine());
+        }
 
         SpawnPlayer();
 
@@ -118,7 +124,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator GameWonCoroutine()
     {
-        messageText.text = "YOU WON";
+        // messageText.text = "YOU WON";
         //        audioManager.PlayGameWonMusic();
 
         roundEnded = true;
@@ -156,5 +162,22 @@ public class GameManager : MonoBehaviour
             audioManager.PlayBackgroundMusic();
             isMusicOn = true;
         }
+    }
+
+    IEnumerator TutorialCoroutine()
+    {
+        messageText.text = "Welcome to RAGE OF RICHES";
+        yield return new WaitForSeconds(messageTextTimerDelay);
+        messageText.text = "AVOID THE ROBBERS";
+        yield return new WaitForSeconds(messageTextTimerDelay);
+        messageText.text = "DROP COINS AS BAIT";
+        yield return new WaitForSeconds(messageTextTimerDelay);
+        messageText.text = "GOOD LUCK";
+        yield return new WaitForSeconds(messageTextTimerDelay);
+        messageText.text = "...";
+        yield return new WaitForSeconds(messageTextTimerDelay);
+        messageText.text = "HAVE FUN";
+        yield return new WaitForSeconds(messageTextTimerDelay);
+        messageText.text = string.Empty;
     }
 }
