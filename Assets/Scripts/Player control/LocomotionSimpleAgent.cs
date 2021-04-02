@@ -58,8 +58,11 @@ public class LocomotionSimpleAgent : MonoBehaviour
 
 	void OnAnimatorMove () 
 	{
-		// Update postion to agent position
-		transform.position = agent.nextPosition;
+		if (agent != null)
+        {
+			// Update postion to agent position
+			transform.position = agent.nextPosition;
+		}
 
 		// Update position based on animation movement using navigation surface height
 //		Vector3 position = anim.rootPosition;

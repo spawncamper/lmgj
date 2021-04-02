@@ -26,14 +26,19 @@ public class AudioManager : MonoBehaviour
         mainAudioSource = GetComponent<AudioSource>();
         mainAudioSource.loop = true;
 
-        StartCoroutine(PlayBackgroundMusic());
+        StartCoroutine(PlayBackgroundMusicCoroutine());
     }
 
-    public IEnumerator PlayBackgroundMusic()
+    public IEnumerator PlayBackgroundMusicCoroutine()
     {
         yield return new WaitForSeconds(audioBlendTime);
         mainAudioSource.clip = backgroundMusic;
         mainAudioSource.Play();
+    }
+
+    public void PlayBackgroundMusic()
+    {
+        StartCoroutine(PlayBackgroundMusicCoroutine());
     }
 
     public IEnumerator PlayAudioClip(AudioClip _audioClip)

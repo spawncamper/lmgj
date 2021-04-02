@@ -180,7 +180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Music On/off
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9c0f642b3d250d4478fc6487dba3e247, type: 2}
   m_sharedMaterial: {fileID: 4028950748834796988, guid: 9c0f642b3d250d4478fc6487dba3e247, type: 2}
@@ -340,9 +340,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1647016940287861349}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: StartGameButton
+      - m_Target: {fileID: 2079075214285603961}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ToggleMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -405,9 +405,41 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 1647016940022898820, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fc03e4ee7f5fec948bce658184262646, type: 3}
+    - target: {fileID: 1647016940022898820, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647016940022898820, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647016940022898820, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647016940022898820, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647016940022898820, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1647016940022898821, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647016940022898821, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647016940022898821, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1647016940022898821, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
       propertyPath: m_AnchorMin.y
@@ -669,6 +701,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainMenuCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1647016941033601135, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647016941033601135, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647016941033601135, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84b028c79f334ad40a71bbad9e74940d, type: 3}
 --- !u!1 &1647016940287861348 stripped
@@ -692,7 +736,6 @@ MonoBehaviour:
   mainMenu: MainMenu
   bootScene: BootScene
   delay: 0.5
-  writeToText: {fileID: 1629352853}
   scoreText: {fileID: 0}
 --- !u!224 &1647016940287861350 stripped
 RectTransform:
@@ -724,7 +767,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endWaitTime: 0.5
-  audioManager: {fileID: 0}
   messageText: {fileID: 0}
   playerPrefab: {fileID: 2059385399315570601, guid: 2d00c9b86906ad84baed6ba0e1502897, type: 3}
   playerSpawnPoint: {fileID: 0}

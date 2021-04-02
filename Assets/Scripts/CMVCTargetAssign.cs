@@ -5,6 +5,11 @@ public class CMVCTargetAssign : MonoBehaviour
 {
     GameObject player;
 
+    private void Awake()
+    {
+
+    }
+
     void OnEnable()
     {
         GameManager.PlayerSpawnedEvent += VCamLookAtFollow;

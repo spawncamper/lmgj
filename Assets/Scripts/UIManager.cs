@@ -9,14 +9,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] string mainMenu;
     [SerializeField] string bootScene;
     [SerializeField] float delay = 0.5f;
-    [SerializeField] TMP_Text writeToText;
     [SerializeField] TMP_Text scoreText;
+
     Score score;
     SceneLoader sceneLoader;
+    AudioManager audioManager;
 
     string activeScene;
     int buildIndex;
     int currentScore;
+    bool isMusicOn = true;
     Scene[] loadedScenes;
 
     void OnEnable()
@@ -31,14 +33,16 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        audioManager = GetComponent<AudioManager>();
+
         sceneLoader = FindObjectOfType<SceneLoader>();
 
         score = FindObjectOfType<Score>();
-        
- //       activeScene = SceneManager.GetActiveScene().name;
 
- //       print("[UIManager] activeScene " + activeScene);
-//        buildIndex = activeScene.buildIndex;
+        //       activeScene = SceneManager.GetActiveScene().name;
+
+        //       print("[UIManager] activeScene " + activeScene);
+        //        buildIndex = activeScene.buildIndex;
     }
 
     private void Update()

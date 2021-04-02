@@ -7,16 +7,15 @@ public class GameManager : MonoBehaviour
 //    [SerializeField] GameObject player;
  //   [SerializeField] Transform playerInitialPosition;
     [SerializeField] float endWaitTime = 0.5f;
-    [SerializeField] AudioManager audioManager;
     [SerializeField] Text messageText;
     [SerializeField] GameObject playerPrefab;
-
     [SerializeField] Transform playerSpawnPoint;
 
-
+    AudioManager audioManager;
     ClickToMove playerMove;
     private bool gameWon = false;
     private bool roundEnded = false;
+    bool isMusicOn = true;
 
     public delegate void RoundStarted();
     public static event RoundStarted RoundStartedEvent;
@@ -32,6 +31,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        audioManager = FindObjectOfType<AudioManager>();
+
         StartCoroutine(GameLoop());
     }
 
@@ -131,13 +132,29 @@ public class GameManager : MonoBehaviour
 
     void SpawnPlayer()
     {
-        if (playerPrefab != null)
+        if (playerPrefab != null && playerSpawnPoint != null)
         {
             GameObject playerInstance = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity) as GameObject;
             playerInstance.transform.parent = gameObject.transform;
 
             if (PlayerSpawnedEvent != null)
                 PlayerSpawnedEvent();
+        }
+    }
+
+    public void ToggleMusic()
+    {
+        if (isMusicOn == true)
+        {
+            print("click + isMusicOn = " + isMusicOn);
+            audioManager.StopMusic();
+            isMusicOn = false;
+        }
+        else
+        {
+            print("click + isMusicOn = " + isMusicOn);
+            audioManager.PlayBackgroundMusic();
+            isMusicOn = true;
         }
     }
 }
