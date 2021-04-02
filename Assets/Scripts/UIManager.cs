@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -8,15 +9,30 @@ public class UIManager : MonoBehaviour
     [SerializeField] string mainMenu;
     [SerializeField] string bootScene;
     [SerializeField] float delay = 0.5f;
+    [SerializeField] TMP_Text scoreText;
+    Score score;
     SceneLoader sceneLoader;
 
     string activeScene;
     int buildIndex;
+    int currentScore;
     Scene[] loadedScenes;
+
+    void OnEnable()
+    {
+        Score.ScoreChangedEvent += UpdateScore;
+    }
+
+    void OnDisable()
+    {
+        Score.ScoreChangedEvent -= UpdateScore;
+    }
 
     void Start()
     {
         sceneLoader = FindObjectOfType<SceneLoader>();
+
+        score = FindObjectOfType<Score>();
         
  //       activeScene = SceneManager.GetActiveScene().name;
 
@@ -79,5 +95,12 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         sceneLoader.UnloadLevelAsync(loadedScenes[1].name);
         yield return new WaitForSeconds(delay);
+    }
+
+    void UpdateScore()
+    {
+        currentScore = score.GetScore();
+
+        scoreText.text = currentScore.ToString();
     }
 }

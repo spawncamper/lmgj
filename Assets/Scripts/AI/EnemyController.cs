@@ -6,12 +6,18 @@ using UnityEngine;
 [RequireComponent(typeof(UnityEngine.AI.NavMeshAgent))]
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] Transform[] waypoints;
+
     public float ReachDistance;
+    public GameObject treasure;
+    public float LookingAroundDelay;
+
+    private Transform[] waypoints;
     private string state = "idle";
     private Vector3 destination;
     private Vector3[] PointsMemory;
     private int memoryIndex;
+
+    private GameObject player;
 
     UnityEngine.AI.NavMeshAgent agent;
 
@@ -20,6 +26,18 @@ public class EnemyController : MonoBehaviour
     {
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         destination = transform.position;
+
+
+        GameObject[] wptList = GameObject.FindGameObjectsWithTag("waypoint");
+        if (wptList.Length > 0)
+        {
+            waypoints = new Transform[wptList.Length];
+            for (int i = 0; i < wptList.Length; i++)
+            {
+                waypoints.SetValue(wptList[i].transform, i);
+                //waypoints[i] = new Transform();
+            }
+        }
 
         if (waypoints.Length == 0)
         {
@@ -52,9 +70,95 @@ public class EnemyController : MonoBehaviour
 
     }
 
+
+    public void CoinSpotted(Collider coin)
+    {
+        Debug.Log("CoinSpotted!");
+        if (state == "roaming" || state == "thinking" || state == "LookingForMore" || state == "idle")
+        {
+            state = "greed";
+            if(!treasure)
+            {
+                agent.SetDestination(coin.gameObject.transform.position);
+                treasure = coin.gameObject;
+            }
+            else
+            {
+                float curDist = Mathf.Abs(Vector3.Distance(agent.transform.position, treasure.transform.position));
+                float newDist = Mathf.Abs(Vector3.Distance(agent.transform.position, coin.gameObject.transform.position));
+
+                if(curDist > newDist)
+                {
+                    agent.SetDestination(coin.gameObject.transform.position);
+                    Debug.Log("Change target!" + coin.gameObject.transform.position.ToString("F3"));
+                    treasure = coin.gameObject;
+                }
+            }
+           
+            gameObject.GetComponentInChildren<SightController>().SetMode("disabled"); //отключаем зрение, пока идем к монетке
+        }
+        
+    }
+
+    public void PlayerSpotted(Collider Player)
+    {
+        Debug.Log("PlayerSpotted!");
+      
+        state = "kill";
+        if (!player)
+        {
+            agent.SetDestination(Player.gameObject.transform.position);
+            player = Player.gameObject;
+            agent.speed = agent.speed * 2;
+        }
+        gameObject.GetComponentInChildren<SightController>().SetMode("disabled"); //отключаем зрение, пока гонимся за ГГ
+       
+
+    }
+
+
     // Update is called once per frame
     void Update()
     {
+
+        if(state == "kill")
+        {
+            if(agent.remainingDistance < 0.5f)
+            {
+                print("GAME OVER!");
+                Destroy(player, 0.5f); //вместо этого вызова нужен метод на герое для смерти.
+                state = "idle";
+                agent.isStopped = true;
+            }
+            if(agent.remainingDistance > 20f)
+            {
+                agent.SetDestination(transform.position); //останавливаем погоню
+                state = "thinking";
+                gameObject.GetComponentInChildren<SightController>().SetMode("straight");
+            }
+        }
+
+        if(state == "greed")
+        {
+            //Debug.DrawLine(agent.transform.position, treasure.transform.position, Color.yellow);
+            if (agent.remainingDistance < 0.5f) //взяли монетку
+            {
+                Destroy(treasure, 0.3f);
+                state = "LookingForMore";
+                agent.isStopped = true;
+            }
+        }
+
+        if(state == "LookingForMore")
+        {
+            //gameObject.GetComponent<SightController>().SetMode("wide"); //включаем зрение в широкий режим
+            gameObject.GetComponentInChildren<SightController>().SetMode("wide"); //включаем зрение в широкий режим
+            StartCoroutine(LookingAround()); //оглядываемся и ждем
+
+        }
+
+
+
         if(state == "thinking")
         {
             if(memoryIndex == 0)
@@ -72,7 +176,7 @@ public class EnemyController : MonoBehaviour
                 Debug.Log("Filling memory");
                 int wptIndex = Random.Range(0, waypoints.Length-1);
                 int stopper = 0;
-                for (int i = 0; i <= PointsMemory.Length; i++)
+                for (int i = 0; i < PointsMemory.Length; i++)
                 {
                     if(PointsMemory[i] != waypoints[wptIndex].position && PointsMemory[i] != new Vector3(0, 0, 0))
                     {
@@ -126,4 +230,30 @@ public class EnemyController : MonoBehaviour
 
 
     }
+
+    IEnumerator LookingAround()
+    {
+        //тут можно было бы кручение головой изобразить или какую-нибудь еще движуху на 1-2 секунды.
+        //state = "idle";
+        Debug.Log("LookingAround coroutine!");
+        yield return new WaitForSeconds(LookingAroundDelay);
+        Debug.Log(state);
+        if (state == "greed")
+        {
+            Debug.Log("Coroutine state changed to greed!");
+            yield return null; //если состояние изменилось на greed - увидели монетку - выходим.
+        }
+
+        if (state != "greed")
+        {
+            //gameObject.GetComponent<SightController>().SetMode("straight");
+            gameObject.GetComponentInChildren<SightController>().SetMode("straight");
+            state = "thinking";
+        }
+        agent.isStopped = false;
+
+
+
+    }
+
 }

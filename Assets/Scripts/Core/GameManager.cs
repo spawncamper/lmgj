@@ -11,12 +11,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] Text messageText;
     [SerializeField] GameObject playerPrefab;
 
+    [SerializeField] Transform playerSpawnPoint;
+
+
     ClickToMove playerMove;
     private bool gameWon = false;
     private bool roundEnded = false;
 
     public delegate void RoundStarted();
     public static event RoundStarted RoundStartedEvent;
+
+    public delegate void RoundEnded();
+    public static event RoundEnded RoundEndedEvent;
 
     public delegate void PlayerSpawned();
     public static event PlayerSpawned PlayerSpawnedEvent;
@@ -32,9 +38,6 @@ public class GameManager : MonoBehaviour
     IEnumerator GameLoop()
     {
         yield return StartCoroutine(RoundStarting());
-
-        if (RoundStartedEvent != null)
-            RoundStartedEvent();
 
         yield return StartCoroutine(RoundPlaying());
 
@@ -73,6 +76,9 @@ public class GameManager : MonoBehaviour
         roundEnded = false;
 
         yield return new WaitForSeconds(endWaitTime);
+
+        if (RoundStartedEvent != null)
+            RoundStartedEvent();
     }
 
     IEnumerator RoundPlaying()
@@ -92,6 +98,9 @@ public class GameManager : MonoBehaviour
     IEnumerator RoundEnding()
     {
         print("Round Ending");
+
+        if (RoundEndedEvent != null)
+            RoundEndedEvent();
 
         var playerInstance = FindObjectOfType<PlayerClass>();
 
@@ -116,7 +125,7 @@ public class GameManager : MonoBehaviour
 
     void SpawnPlayer()
     {
-        GameObject playerInstance = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        GameObject playerInstance = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity) as GameObject;
         playerInstance.transform.parent = gameObject.transform;
 
         if (PlayerSpawnedEvent != null)

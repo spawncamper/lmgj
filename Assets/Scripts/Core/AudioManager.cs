@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioClip gameOverMusic;
     [SerializeField] AudioClip gameWonMusic;
     [SerializeField] AudioClip mouseClickSound;
+    [SerializeField] AudioClip coinTossSound;
     [SerializeField] float audioBlendTime = 0.5f;
     AudioSource mainAudioSource;
 
