@@ -1071,9 +1071,11 @@ GameObject:
   - component: {fileID: 5473093202499280504}
   - component: {fileID: 5473093202499280510}
   - component: {fileID: 672461627}
+  - component: {fileID: 4857251560462396827}
+  - component: {fileID: 4910601573678284420}
   m_Layer: 0
   m_Name: EnemyPrefab_v2
-  m_TagString: Untagged
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1210,6 +1212,7 @@ MonoBehaviour:
   ReachDistance: 2
   treasure: {fileID: 0}
   LookingAroundDelay: 2
+  corpseRemainingDelay: 3
 --- !u!114 &672461627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1226,6 +1229,36 @@ MonoBehaviour:
   m_Area: 0
   m_IgnoreFromBuild: 1
   m_AffectedAgents: ffffffff
+--- !u!54 &4857251560462396827
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5473093202499280506}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
+--- !u!136 &4910601573678284420
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5473093202499280506}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.6
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!1 &5473102333827242744
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class LocomotionSimpleAgent : MonoBehaviour
 		anim = GetComponent<Animator> ();
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent> ();
 		agent.updatePosition = false;
+        anim.SetBool("dead", false);
 	}
 	
 	void Update () 

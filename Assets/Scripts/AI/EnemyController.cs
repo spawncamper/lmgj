@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour
     public float ReachDistance;
     public GameObject treasure;
     public float LookingAroundDelay;
+    public float corpseRemainingDelay;
 
     private Transform[] waypoints;
     private string state = "idle";
@@ -21,12 +22,16 @@ public class EnemyController : MonoBehaviour
 
     UnityEngine.AI.NavMeshAgent agent;
 
+    Animator anim;
+
+
     public delegate void PlayerDeath();
     public static event PlayerDeath PlayerDeathEvent;
 
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         destination = transform.position;
 
@@ -102,6 +107,13 @@ public class EnemyController : MonoBehaviour
         
     }
 
+
+    public void dead()
+    {
+        state = "dead";
+    }
+
+
     public void PlayerSpotted(Collider Player)
     {
         Debug.Log("PlayerSpotted!");
@@ -112,7 +124,7 @@ public class EnemyController : MonoBehaviour
         {
             agent.SetDestination(Player.gameObject.transform.position);
             player = Player.gameObject;
-            agent.speed = agent.speed * 2;
+           // agent.speed = agent.speed * 2;
         }
 
         gameObject.GetComponentInChildren<SightController>().SetMode("disabled"); //отключаем зрение, пока гонимся за ГГ
@@ -130,6 +142,15 @@ public class EnemyController : MonoBehaviour
 
     void UpdateEnemyControllerFSM()
     {
+
+        if(state == "dead")
+        {
+            agent.isStopped = true;
+            anim.SetBool("dead", true);
+            
+            Destroy(this.gameObject, corpseRemainingDelay);
+        }
+
         if (state == "kill")
         {
             if (agent.remainingDistance < 0.5f)
