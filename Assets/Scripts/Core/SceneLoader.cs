@@ -7,7 +7,7 @@ public class SceneLoader : MonoBehaviour
 {
     [SerializeField] GameObject corePrefab;
     [SerializeField] string mainMenu;
-    [SerializeField] string Level01;
+    [SerializeField] string GameScene01;
     [SerializeField] float delay = 1f;
 
     static bool corePrefabsSpawned = false;    // hasSpawned
@@ -29,7 +29,7 @@ public class SceneLoader : MonoBehaviour
             Debug.LogError("[SceneLoader] Second instance of GameManager detected and deleted");
         }
 
-        SceneLoader SceneLoader = FindObjectOfType<SceneLoader>();
+//        SceneLoader SceneLoader = FindObjectOfType<SceneLoader>();
 
         DontDestroyOnLoad(this);
 
@@ -103,12 +103,6 @@ public class SceneLoader : MonoBehaviour
     void OnUnloadOperationComplete(AsyncOperation asyncOp)
     {
         Debug.Log("Unload complete");
-    }
-
-    public void PlayerDiedEvent()
-    {
-        LoadLevelAsync(mainMenu);
-        UnloadLevelAsync(Level01);
     }
 
     public void QuitGame()
