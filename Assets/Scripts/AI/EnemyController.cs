@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
 
         if (waypoints.Length == 0)
         {
-            Debug.LogError("No waypoints set - idle");
+            //Debug.LogError("No waypoints set - idle");
             state = "idle";
         }
         else
@@ -60,14 +60,14 @@ public class EnemyController : MonoBehaviour
         {
             pointsText += " i:" + i + "  vector:" + waypoints[i].position.ToString("F3") +";    ";
         }
-        Debug.Log(pointsText);
+        //Debug.Log(pointsText);
 
         //очищаем память
         if(waypoints.Length > 0)
         {
             PointsMemory = new Vector3[waypoints.Length];
             memoryIndex = 0;
-            Debug.Log("Clearing memory");
+            //Debug.Log("Clearing memory");
             for (int i = 0; i < PointsMemory.Length; i++)
             {
                 PointsMemory.SetValue(new Vector3(0, 0, 0), i);
@@ -80,7 +80,7 @@ public class EnemyController : MonoBehaviour
 
     public void CoinSpotted(Collider coin)
     {
-        Debug.Log("CoinSpotted!");
+        //Debug.Log("CoinSpotted!");
         if (state == "roaming" || state == "thinking" || state == "LookingForMore" || state == "idle")
         {
             state = "greed";
@@ -97,7 +97,7 @@ public class EnemyController : MonoBehaviour
                 if(curDist > newDist)
                 {
                     agent.SetDestination(coin.gameObject.transform.position);
-                    Debug.Log("Change target!" + coin.gameObject.transform.position.ToString("F3"));
+                    //Debug.Log("Change target!" + coin.gameObject.transform.position.ToString("F3"));
                     treasure = coin.gameObject;
                 }
             }
@@ -116,7 +116,7 @@ public class EnemyController : MonoBehaviour
 
     public void PlayerSpotted(Collider Player)
     {
-        Debug.Log("PlayerSpotted!");
+        //Debug.Log("PlayerSpotted!");
       
         state = "kill";
 
@@ -196,17 +196,17 @@ public class EnemyController : MonoBehaviour
         {
             if (memoryIndex == 0)
             {
-                Debug.Log("Starting memory");
+                //Debug.Log("Starting memory");
                 //выбираем первую точку в качестве цели, записываем ее в память.
                 int wptIndex = Random.Range(0, waypoints.Length - 1);
-                Debug.Log("Starting point index = " + wptIndex + "   vector3 = " + waypoints[wptIndex].position.ToString("F3"));
+                //Debug.Log("Starting point index = " + wptIndex + "   vector3 = " + waypoints[wptIndex].position.ToString("F3"));
                 PointsMemory[0] = waypoints[wptIndex].position;
                 destination = PointsMemory[0];
                 memoryIndex++;
             }
             else if (memoryIndex > 0 && memoryIndex < waypoints.Length)
             {
-                Debug.Log("Filling memory");
+                //Debug.Log("Filling memory");
                 int wptIndex = Random.Range(0, waypoints.Length - 1);
                 int stopper = 0;
                 for (int i = 0; i < PointsMemory.Length; i++)
@@ -229,7 +229,7 @@ public class EnemyController : MonoBehaviour
                     stopper++; //если что-то пошло не так
                     if (stopper > 1000)
                     {
-                        Debug.LogError("Error thinking - idle");
+                        //Debug.LogError("Error thinking - idle");
                         state = "idle";
                         break;
                     }
@@ -240,7 +240,7 @@ public class EnemyController : MonoBehaviour
             {
                 //очищаем память
                 memoryIndex = 0;
-                Debug.Log("Clearing memory");
+                //Debug.Log("Clearing memory");
                 for (int i = 0; i < PointsMemory.Length; i++)
                 {
                     PointsMemory.SetValue(new Vector3(0, 0, 0), i);
@@ -266,13 +266,13 @@ public class EnemyController : MonoBehaviour
     {
         //тут можно было бы кручение головой изобразить или какую-нибудь еще движуху на 1-2 секунды.
         //state = "idle";
-        Debug.Log("LookingAround coroutine!");
+        //Debug.Log("LookingAround coroutine!");
         yield return new WaitForSeconds(LookingAroundDelay);
-        Debug.Log(state);
+        //Debug.Log(state);
 
         if (state == "greed")
         {
-            Debug.Log("Coroutine state changed to greed!");
+            //Debug.Log("Coroutine state changed to greed!");
             yield return null; //если состояние изменилось на greed - увидели монетку - выходим.
         }
 

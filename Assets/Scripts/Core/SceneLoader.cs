@@ -105,6 +105,12 @@ public class SceneLoader : MonoBehaviour
         Debug.Log("Unload complete");
     }
 
+    public void PlayerDiedEvent()
+    {
+        LoadLevelAsync(mainMenu);
+        UnloadLevelAsync(Level01);
+    }
+
     public void QuitGame()
     {
         Application.Quit();

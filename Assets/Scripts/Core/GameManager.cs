@@ -9,16 +9,19 @@ public class GameManager : MonoBehaviour
  //   [SerializeField] Transform playerInitialPosition;
     [SerializeField] float endWaitTime = 0.5f;
     [SerializeField] float messageTextTimerDelay = 2f;
+    [SerializeField] float gameOverDelay = 5f;
     [SerializeField] GameObject playerPrefab;
     [SerializeField] Transform playerSpawnPoint;
     [SerializeField] bool playIntro = true;
     [SerializeField] TMP_Text tutorialText;
 
+    
     AudioManager audioManager;
     ClickToMove playerMove;
+    SceneLoader sceneLoader;
 
     private bool gameWon = false;
-    private bool roundEnded = false;
+    public bool roundEnded = false;
     bool isMusicOn = true;
 
     public static bool isPlayerDead = true;
@@ -34,6 +37,9 @@ public class GameManager : MonoBehaviour
 
     public delegate void GameWon();
     public static event GameWon GameWonEvent;
+
+    public delegate void GameOver();
+    public static event GameOver GameOverEvent;
 
     void OnEnable()
     {
@@ -62,7 +68,18 @@ public class GameManager : MonoBehaviour
 
         if (gameWon == false)
         {
-            StartCoroutine(GameLoop());
+            if (GameOverEvent != null)
+                GameOverEvent();
+
+            sceneLoader = FindObjectOfType<SceneLoader>();
+            
+            sceneLoader.LoadLevelAsync("MainMenu");
+
+            yield return new WaitForSeconds(gameOverDelay);
+
+            Debug.LogError("[GameManager] " + gameObject.name + "gameOverDelay exceeded");
+
+            //            StartCoroutine(GameLoop());
         }
         else
         {
@@ -119,6 +136,8 @@ public class GameManager : MonoBehaviour
 
         while (roundEnded == false)
         {
+            print(roundEnded);
+            
             if (playerMove != null)
             {
                 playerMove.MovePlayer();
