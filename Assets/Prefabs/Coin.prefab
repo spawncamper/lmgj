@@ -105,8 +105,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4665749649234442408}
   - component: {fileID: 4357783528545399987}
-  - component: {fileID: 1939857108890774222}
   - component: {fileID: 6459906201538641120}
+  - component: {fileID: 2258685959470688899}
   m_Layer: 0
   m_Name: Coin
   m_TagString: gold
@@ -143,18 +143,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &1939857108890774222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6395726071627537933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a11c011821fb47e43b7ca212b45d094f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &6459906201538641120
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -171,3 +159,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &2258685959470688899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6395726071627537933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19a92b95c39b00145b8d61bd125040de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 60

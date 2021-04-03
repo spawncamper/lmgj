@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(UnityEngine.AI.NavMeshAgent))]
 public class EnemyController : MonoBehaviour
 {
-
+    [SerializeField] int HaveCoins = 10;
     public float ReachDistance;
     public GameObject treasure;
     public float LookingAroundDelay;
@@ -24,6 +24,7 @@ public class EnemyController : MonoBehaviour
 
     Animator anim;
 
+    CoinController cc;
 
     public delegate void PlayerDeath();
     public static event PlayerDeath PlayerDeathEvent;
@@ -34,6 +35,7 @@ public class EnemyController : MonoBehaviour
         anim = GetComponent<Animator>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         destination = transform.position;
+        cc = GameObject.FindGameObjectWithTag("Player").GetComponent<CoinController>();
 
         GameObject[] wptList = GameObject.FindGameObjectsWithTag("waypoint");
         if (wptList.Length > 0)
@@ -58,12 +60,12 @@ public class EnemyController : MonoBehaviour
         string pointsText = "";
         for (int i = 0; i < waypoints.Length; i++)
         {
-            pointsText += " i:" + i + "  vector:" + waypoints[i].position.ToString("F3") +";    ";
+            pointsText += " i:" + i + "  vector:" + waypoints[i].position.ToString("F3") + ";    ";
         }
         //Debug.Log(pointsText);
 
         //очищаем память
-        if(waypoints.Length > 0)
+        if (waypoints.Length > 0)
         {
             PointsMemory = new Vector3[waypoints.Length];
             memoryIndex = 0;
@@ -81,7 +83,7 @@ public class EnemyController : MonoBehaviour
     public void CoinSpotted(Collider coin)
     {
         //Debug.Log("CoinSpotted!");
-        if (state == "roaming" || state == "thinking" || state == "LookingForMore" || state == "idle")
+        if (state == "roaming" || state == "thinking" || state == "LookingForMore" || state == "idle" || state == "greed" )
         {
             state = "greed";
             if(!treasure)
@@ -91,13 +93,15 @@ public class EnemyController : MonoBehaviour
             }
             else
             {
-                float curDist = Mathf.Abs(Vector3.Distance(agent.transform.position, treasure.transform.position));
+                float curDist = Mathf.Abs(Vector3.Distance(agent.transform.position, agent.destination/*treasure.transform.position*/));
                 float newDist = Mathf.Abs(Vector3.Distance(agent.transform.position, coin.gameObject.transform.position));
-
-                if(curDist > newDist)
+                //Debug.DrawLine(agent.transform.position, agent.destination, Color.green);
+                //Debug.DrawLine(agent.transform.position, agent.destination, Color.red);
+               // Debug.Log(curDist.ToString("F3") + "   " + newDist.ToString("F3"));
+                if (curDist > newDist)
                 {
                     agent.SetDestination(coin.gameObject.transform.position);
-                    //Debug.Log("Change target!" + coin.gameObject.transform.position.ToString("F3"));
+                    Debug.Log("Change target!" + coin.gameObject.transform.position.ToString("F3"));
                     treasure = coin.gameObject;
                 }
             }
@@ -147,7 +151,8 @@ public class EnemyController : MonoBehaviour
         {
             agent.isStopped = true;
             anim.SetBool("dead", true);
-            
+            cc.AddCoins(HaveCoins);
+            HaveCoins = 0;
             Destroy(this.gameObject, corpseRemainingDelay);
         }
 
@@ -174,9 +179,10 @@ public class EnemyController : MonoBehaviour
         if (state == "greed")
         {
             //Debug.DrawLine(agent.transform.position, treasure.transform.position, Color.yellow);
-            if (agent.remainingDistance < 0.5f) //взяли монетку
+            if (agent.remainingDistance < 0.2f) //взяли монетку
             {
-                Destroy(treasure, 0.3f);
+                Destroy(treasure, 0);
+                HaveCoins++;
                 state = "LookingForMore";
                 agent.isStopped = true;
             }

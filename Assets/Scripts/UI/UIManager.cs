@@ -14,7 +14,9 @@ public class UIManager : MonoBehaviour
 
     SceneLoader sceneLoader;
     CoinController coinController;
+    AudioManager audioManager;
 
+    bool isMusicOn = true;
     string activeScene;
     int currentCoins;
     Scene[] loadedScenes;
@@ -33,7 +35,9 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        
+
+        audioManager = FindObjectOfType<AudioManager>();
+
         sceneLoader = FindObjectOfType<SceneLoader>();
 
         coinController = FindObjectOfType<CoinController>();
@@ -117,4 +121,22 @@ public class UIManager : MonoBehaviour
             Debug.LogError("[UIManager] coinController == null");
         }
     }
+
+
+    public void ToggleMusic()
+    {
+        if (isMusicOn == true)
+        {
+            print("click + isMusicOn = " + isMusicOn);
+            audioManager.StopMusic();
+            isMusicOn = false;
+        }
+        else
+        {
+            print("click + isMusicOn = " + isMusicOn);
+            audioManager.PlayBackgroundMusic();
+            isMusicOn = true;
+        }
+    }
+
 }

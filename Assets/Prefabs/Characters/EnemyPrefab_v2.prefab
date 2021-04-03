@@ -1211,7 +1211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ReachDistance: 2
   treasure: {fileID: 0}
-  LookingAroundDelay: 2
+  LookingAroundDelay: 1.5
   corpseRemainingDelay: 3
 --- !u!114 &672461627
 MonoBehaviour:
@@ -4476,7 +4476,7 @@ Transform:
   m_GameObject: {fileID: 6162495120486150993}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5467433199739103290}
   m_RootOrder: 6
@@ -4492,7 +4492,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1.65, z: 6}
+  m_Size: {x: 2, y: 1.65, z: 6}
   m_Center: {x: 0, y: 0.9, z: 3}
 --- !u!114 &1027472451118752087
 MonoBehaviour:

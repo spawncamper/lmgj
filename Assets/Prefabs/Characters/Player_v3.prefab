@@ -2678,7 +2678,7 @@ NavMeshAgent:
   m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 240
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -2802,7 +2802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a11c011821fb47e43b7ca212b45d094f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialCoins: 3
+  initialCoins: 20
   coinPrefab: {fileID: 6395726071627537933, guid: 7c230414c9919f846b1eeac9800cf415, type: 3}
 --- !u!1 &2463179075415596394
 GameObject:
@@ -3310,7 +3310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6119066985172652943
 Transform:
   m_ObjectHideFlags: 0
