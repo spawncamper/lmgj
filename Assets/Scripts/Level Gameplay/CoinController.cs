@@ -3,10 +3,10 @@ using UnityEngine;
 public class CoinController : MonoBehaviour
 {
     // Location: on the same object as GameManager in the Scene
-    GameObject metal;
-    [SerializeField] int initialCoins = 3;
 
-    GameManager gameManager;
+    [SerializeField] int initialCoins = 3;
+    [SerializeField] int oneCoin = 1;
+    [SerializeField] int enemyDeathReward = 10;
 
     int currentCoins;
 
@@ -16,11 +16,13 @@ public class CoinController : MonoBehaviour
     private void OnEnable()
     {
         CoinSpawner.CoinSpawnedEvent += SpawnCoin;
+        EnemyController.EnemyDeathEvent += EnemyDeath;
     }
 
     private void OnDisable()
     {
         CoinSpawner.CoinSpawnedEvent -= SpawnCoin;
+        EnemyController.EnemyDeathEvent -= EnemyDeath;
     }
 
     // Start is called before the first frame update
@@ -30,8 +32,6 @@ public class CoinController : MonoBehaviour
 
         if (ScoreChangedEvent != null)
             ScoreChangedEvent();
-
-        gameManager = FindObjectOfType<GameManager>();
     }
 
     public void AddCoins(int number)
@@ -57,6 +57,11 @@ public class CoinController : MonoBehaviour
 
     void SpawnCoin()
     {
-        AddCoins(1);
+        AddCoins(oneCoin);
+    }
+
+    void EnemyDeath()
+    {
+        AddCoins(enemyDeathReward);
     }
 }

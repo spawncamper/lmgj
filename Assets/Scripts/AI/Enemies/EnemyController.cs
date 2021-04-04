@@ -25,10 +25,11 @@ public class EnemyController : MonoBehaviour
 
     Animator anim;
 
-    CoinController coinController;
-
     public delegate void PlayerDeath();
     public static event PlayerDeath PlayerDeathEvent;
+
+    public delegate void EnemyDeath();
+    public static event EnemyDeath EnemyDeathEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +37,6 @@ public class EnemyController : MonoBehaviour
         anim = GetComponent<Animator>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         destination = transform.position;
-        coinController = GameObject.FindGameObjectWithTag("Player").GetComponent<CoinController>();
 
         GameObject[] wptList = GameObject.FindGameObjectsWithTag("waypoint");
         if (wptList.Length > 0)
@@ -152,8 +152,10 @@ public class EnemyController : MonoBehaviour
         {
             agent.isStopped = true;
             anim.SetBool("dead", true);
-            coinController.AddCoins(HaveCoins);
-            HaveCoins = 0;
+
+            if (EnemyDeathEvent != null)
+                EnemyDeathEvent();
+
             Destroy(this.gameObject, corpseRemainingDelay);
         }
 
