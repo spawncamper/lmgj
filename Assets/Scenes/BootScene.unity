@@ -188,7 +188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   corePrefab: {fileID: 8246533678523478908, guid: 063189d68afbc1d43bb40473ae3ab25f, type: 3}
   mainMenu: MainMenu
-  Level01: GameScene01
+  GameScene01: GameScene01
   delay: 1
 --- !u!82 &1988447187
 AudioSource:

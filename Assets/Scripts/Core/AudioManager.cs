@@ -83,7 +83,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayCoinSound()
     {
-        mainAudioSource.PlayOneShot(coinTossSound, 1f);
+        mainAudioSource.PlayOneShot(coinTossSound, audioBlendTime * 2);
     }
 
     public void StopMusic()

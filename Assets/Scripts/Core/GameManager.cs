@@ -10,12 +10,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] float endWaitTime = 0.5f;
     [SerializeField] float messageTextTimerDelay = 2f;
     [SerializeField] float gameOverDelay = 5f;
+    
     [SerializeField] GameObject playerPrefab;
     [SerializeField] Transform playerSpawnPoint;
-    [SerializeField] bool playIntro = true;
     [SerializeField] TMP_Text tutorialText;
 
-    
+    [SerializeField] bool playIntro = true;
+
     AudioManager audioManager;
     ClickToMove playerMove;
     SceneLoader sceneLoader;
@@ -154,7 +155,7 @@ public class GameManager : MonoBehaviour
         if (RoundEndedEvent != null)
             RoundEndedEvent();
 
-        isPlayerDead = false;
+//        isPlayerDead = false;
 
         var playerInstance = FindObjectOfType<PlayerClass>();
 
@@ -171,7 +172,7 @@ public class GameManager : MonoBehaviour
         // messageText.text = "YOU WON";
         //        audioManager.PlayGameWonMusic();
 
-        isPlayerDead = true;
+ //       isPlayerDead = true;
 
         roundEnded = true;
         gameWon = false;
