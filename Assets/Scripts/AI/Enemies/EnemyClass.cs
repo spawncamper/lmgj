@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyClass : MonoBehaviour
+public class EnemyClass : MonoBehaviour, IKillable
 {
     [SerializeField] float enemyDeathEventDelay;
 
@@ -16,20 +15,17 @@ public class EnemyClass : MonoBehaviour
         EnemyController.EnemyDeathEvent -= SelfDestruct;
     }
 
-    void SelfDestruct()
+    public void SelfDestruct()
     {
+        print("[EnemyClass] SelfDestruct " + gameObject.name);
 
+        StartCoroutine(SelfDestructCoroutine());
     }
 
-    // Start is called before the first frame update
-    void Start()
+    IEnumerator SelfDestructCoroutine()
     {
-        
-    }
+        yield return new WaitForSeconds(enemyDeathEventDelay);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Destroy(gameObject);
     }
 }

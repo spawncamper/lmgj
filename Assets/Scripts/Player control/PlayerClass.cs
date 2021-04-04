@@ -1,18 +1,21 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerClass : MonoBehaviour
+public class PlayerClass : MonoBehaviour, IKillable
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] float playerDeathEventDelay;
+
+    public void SelfDestruct()
     {
-        
+        print("[PlayerClass] SelfDestruct");
+
+        StartCoroutine(SelfDestructCoroutine());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator SelfDestructCoroutine()
     {
-        
+        yield return new WaitForSeconds(playerDeathEventDelay);
+
+        Destroy(gameObject);
     }
 }

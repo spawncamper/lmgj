@@ -7,7 +7,6 @@ public class EnemyController : MonoBehaviour
 {
     // Location: on each Enemy prefab
 
-    [SerializeField] int HaveCoins = 10;
     public float ReachDistance;
     public GameObject treasure;
     public float LookingAroundDelay;
@@ -20,6 +19,7 @@ public class EnemyController : MonoBehaviour
     private int memoryIndex;
 
     private GameObject player;
+    EnemyClass enemyClass;
 
     UnityEngine.AI.NavMeshAgent agent;
 
@@ -36,6 +36,8 @@ public class EnemyController : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        enemyClass = GetComponent<EnemyClass>();
+
         destination = transform.position;
 
         GameObject[] wptList = GameObject.FindGameObjectsWithTag("waypoint");
@@ -155,6 +157,8 @@ public class EnemyController : MonoBehaviour
 
         if (state == "dead")
         {
+            print("[EnemyController] state == dead , object name " + gameObject.name);
+
             agent.isStopped = true;
             anim.SetBool("dead", true);
 
@@ -163,7 +167,7 @@ public class EnemyController : MonoBehaviour
 
             print("[EnemyController] destroy self " + gameObject.name);
 
-            Destroy(gameObject, corpseRemainingDelay);
+ //           Destroy(gameObject, corpseRemainingDelay);
         }
 
         if (state == "kill")
@@ -178,7 +182,7 @@ public class EnemyController : MonoBehaviour
                 if (PlayerDeathEvent != null)
                     PlayerDeathEvent();
 
-                StartCoroutine(DestroySelf());
+//               StartCoroutine(DestroySelf());
             }
             if (agent.remainingDistance > 20f)
             {
@@ -194,7 +198,6 @@ public class EnemyController : MonoBehaviour
             if (agent.remainingDistance < 0.2f) //взяли монетку
             {
                 Destroy(treasure, 0);
-                HaveCoins++;
                 state = "LookingForMore";
                 agent.isStopped = true;
             }
@@ -301,21 +304,6 @@ public class EnemyController : MonoBehaviour
             state = "thinking";
         }
         agent.isStopped = false;
-    }
-
-    IEnumerator DestroySelf()
-    {
-        agent.isStopped = true;
-        anim.SetBool("dead", true);
-
-        print("[EnemyController] Destroy Self " + gameObject.name);
-
-        yield return new WaitForSeconds(corpseRemainingDelay);
-
-        if (EnemyDeathEvent != null)
-            EnemyDeathEvent();
-
-        Destroy(gameObject);
     }
 
 }

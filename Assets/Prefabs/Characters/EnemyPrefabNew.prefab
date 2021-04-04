@@ -1240,6 +1240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76dff4a200ec11e428ac2626d587ee2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyDeathEventDelay: 1
 --- !u!1 &5473102333827242744
 GameObject:
   m_ObjectHideFlags: 0
