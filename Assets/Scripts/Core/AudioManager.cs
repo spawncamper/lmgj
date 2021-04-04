@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    // on the Boot object on the boot scene
-    
+    // Location: on the Boot object on the boot scene
+
     [SerializeField] AudioClip backgroundMusic;
     [SerializeField] AudioClip gameOverMusic;
     [SerializeField] AudioClip gameWonMusic;

@@ -5,10 +5,10 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    // Game Manager object in the Scene hierarchy
+    // Location: Game Manager object in the Scene hierarchy
     //
-//    [SerializeField] GameObject player;
- //   [SerializeField] Transform playerInitialPosition;
+    //    [SerializeField] GameObject player;
+    //   [SerializeField] Transform playerInitialPosition;
     [SerializeField] float endWaitTime = 0.5f;
     [SerializeField] float messageTextTimerDelay = 2f;
     [SerializeField] float gameOverDelay = 5f;

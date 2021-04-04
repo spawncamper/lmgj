@@ -5,7 +5,7 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    // in each game scene, on the parent Canvas object
+    // Location: in each game scene, on the parent Canvas object
     
     [SerializeField] string Level01;
     [SerializeField] string mainMenu;
