@@ -30,7 +30,7 @@ public class ClickToMove : MonoBehaviour
 
 			if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity, layerMask))
 			{
-				print(hitInfo.transform.gameObject.name);
+//				print(hitInfo.transform.gameObject.name);
 
 				agent.destination = hitInfo.point;
 

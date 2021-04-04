@@ -38,10 +38,11 @@ public class LocomotionSimpleAgent : MonoBehaviour
 
 		bool shouldMove = velocity.magnitude > 0.5f && agent.remainingDistance > agent.radius;
 
-		// Update animation parameters
-		anim.SetBool("move", shouldMove);
-		anim.SetFloat("velx", velocity.x);
-		anim.SetFloat("vely", velocity.y);
+			// Update animation parameters
+			anim.SetBool("move", shouldMove);
+			anim.SetFloat("velx", velocity.x);
+			anim.SetFloat("vely", velocity.y);
+
 
 		// Update animation parameters		
 		//		LookAt lookAt = GetComponent<LookAt> ();

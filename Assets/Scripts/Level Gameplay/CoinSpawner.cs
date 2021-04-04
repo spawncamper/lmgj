@@ -12,7 +12,7 @@ public class CoinSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        coinController = GetComponent<CoinController>();
+        coinController = FindObjectOfType<CoinController>();
     }
 
     // Update is called once per frame
