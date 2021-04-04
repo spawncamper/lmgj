@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    // on the Boot object on the boot scene
+    
     [SerializeField] AudioClip backgroundMusic;
     [SerializeField] AudioClip gameOverMusic;
     [SerializeField] AudioClip gameWonMusic;
@@ -15,13 +17,13 @@ public class AudioManager : MonoBehaviour
     void OnEnable()
     {
         ClickToMove.MouseClickEvent += PlayMouseClickSound;
-        CoinController.CoinSpawnedEvent += PlayCoinSound;
+        CoinSpawner.CoinSpawnedEvent += PlayCoinSound;
     }
 
     void OnDisable()
     {
         ClickToMove.MouseClickEvent -= PlayMouseClickSound;
-        CoinController.CoinSpawnedEvent -= PlayCoinSound;
+        CoinSpawner.CoinSpawnedEvent -= PlayCoinSound;
     }
 
     void Start()

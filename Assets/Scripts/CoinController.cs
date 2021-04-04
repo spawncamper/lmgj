@@ -2,43 +2,25 @@ using UnityEngine;
 
 public class CoinController : MonoBehaviour
 {
+    // Location: on the same object as GameManager in the Scene
     GameObject metal;
     [SerializeField] int initialCoins = 3;
-    [SerializeField] GameObject coinPrefab;
-    GameManager gameManager;
-    int currentCoins;
 
-    public delegate void CoinSpawned();
-    public static event CoinSpawned CoinSpawnedEvent;
+    GameManager gameManager;
+
+    int currentCoins;
 
     public delegate void ScoreChanged();
     public static event ScoreChanged ScoreChangedEvent;
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown("space"))
-        {
-            if (currentCoins >= 1)
-            {
-                if (ScoreChangedEvent != null)
-                    ScoreChangedEvent();
+        CoinSpawner.CoinSpawnedEvent += SpawnCoin;
+    }
 
-                if (CoinSpawnedEvent != null)
-                    CoinSpawnedEvent();
-
-                currentCoins--;
-
-                Vector3 CoinPosition = new Vector3(transform.position.x, 0.65f, transform.position.z);
-
-                GameObject cointInstance = Instantiate(coinPrefab, CoinPosition, Quaternion.identity) as GameObject;
-                cointInstance.transform.parent = gameManager.transform;
-            }
-            else
-            {
-                Debug.LogWarning("[CoinController] currentCoins = 0");
-            }
-        }
+    private void OnDisable()
+    {
+        CoinSpawner.CoinSpawnedEvent -= SpawnCoin;
     }
 
     // Start is called before the first frame update
@@ -71,5 +53,10 @@ public class CoinController : MonoBehaviour
 
         if (ScoreChangedEvent != null)
             ScoreChangedEvent();
+    }
+
+    void SpawnCoin()
+    {
+        AddCoins(1);
     }
 }

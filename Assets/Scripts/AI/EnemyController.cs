@@ -1,11 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
 [RequireComponent(typeof(UnityEngine.AI.NavMeshAgent))]
 public class EnemyController : MonoBehaviour
 {
+    // on each Enemy prefab
+    
     [SerializeField] int HaveCoins = 10;
     public float ReachDistance;
     public GameObject treasure;

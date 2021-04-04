@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    // on the BOOT object in the boot scene
+    
     [SerializeField] GameObject corePrefab;
     [SerializeField] string mainMenu;
     [SerializeField] string GameScene01;
