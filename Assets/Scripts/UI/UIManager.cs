@@ -37,10 +37,10 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-
         audioManager = FindObjectOfType<AudioManager>();
-
         sceneLoader = FindObjectOfType<SceneLoader>();
+        coinController = FindObjectOfType<CoinController>();
+        scoreText = GetComponentInChildren<TMP_Text>();
 
         //       activeScene = SceneManager.GetActiveScene().name;
 
@@ -107,12 +107,15 @@ public class UIManager : MonoBehaviour
 
     void UpdateScore()
     {
-        coinController = FindObjectOfType<CoinController>();
-
         if (coinController == null)
             Debug.LogError("[UIManager] coinController is null");
 
         currentCoins = coinController.ReturnCurrentCoins();
+
+        if (scoreText == null)
+        {
+            Debug.LogError("[UIManager] scoreText is null");
+        }
 
         scoreText.text = currentCoins.ToString();
     }
