@@ -32,9 +32,6 @@ public class GameManager : MonoBehaviour
     public delegate void RoundStarted();
     public static event RoundStarted RoundStartedEvent;
 
-    public delegate void RoundEnded();
-    public static event RoundEnded RoundEndedEvent;
-
     public delegate void PlayerSpawned();
     public static event PlayerSpawned PlayerSpawnedEvent;
 
@@ -46,12 +43,12 @@ public class GameManager : MonoBehaviour
 
     void OnEnable()
     {
-        EnemyController.PlayerDeathEvent += PlayerDeath;
+        EnemyController.PlayerDeathEvent += PlayerDeathEvent;
     }
 
     void OnDisable()
     {
-        EnemyController.PlayerDeathEvent -= PlayerDeath;
+        EnemyController.PlayerDeathEvent -= PlayerDeathEvent;
     }
 
     void Start()
@@ -130,7 +127,7 @@ public class GameManager : MonoBehaviour
     IEnumerator RoundPlaying()
     {
 
-        print("Round playing");
+        print("Round playing Started");
         //        scorer = FindObjectOfType<Scorer>();
 
         isPlayerDead = false;
@@ -146,23 +143,17 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
+
+        print("Round playing Ended");
     }
 
     IEnumerator RoundEnding()
     {
-        print("Round Ending");
+        print("Round Ending Started");
 
-        if (RoundEndedEvent != null)
-            RoundEndedEvent();
+        //        isPlayerDead = false;
 
-//        isPlayerDead = false;
-
-        var playerInstance = FindObjectOfType<PlayerClass>();
-
-        if (playerInstance != null)
-        {
-            Destroy(playerInstance);
-        }
+        DestroyPlayer();
 
         yield return endWaitTime;
     }
@@ -212,7 +203,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void PlayerDeath()
+    void DestroyPlayer()
+    {
+        var playerInstance = FindObjectOfType<PlayerClass>();
+
+        if (playerInstance != null)
+        {
+            Destroy(playerInstance);
+        }
+        else
+        {
+            Debug.LogError("[GameManager] playerInstance == null");
+        }
+    }
+
+    void PlayerDeathEvent()
     {
         // Game over text
         print("[GameManager] PlayerDeath");
