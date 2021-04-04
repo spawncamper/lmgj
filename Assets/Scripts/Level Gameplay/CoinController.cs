@@ -15,13 +15,13 @@ public class CoinController : MonoBehaviour
 
     private void OnEnable()
     {
-        CoinSpawner.CoinSpawnedEvent += SpawnCoin;
+        CoinSpawner.CoinSpawnedEvent += CoinSpawnEvent;
         EnemyController.EnemyDeathEvent += EnemyDeath;
     }
 
     private void OnDisable()
     {
-        CoinSpawner.CoinSpawnedEvent -= SpawnCoin;
+        CoinSpawner.CoinSpawnedEvent -= CoinSpawnEvent;
         EnemyController.EnemyDeathEvent -= EnemyDeath;
     }
 
@@ -55,9 +55,9 @@ public class CoinController : MonoBehaviour
             ScoreChangedEvent();
     }
 
-    void SpawnCoin()
+    void CoinSpawnEvent()
     {
-        AddCoins(oneCoin);
+        AddCoins(oneCoin * (-1));
     }
 
     void EnemyDeath()
