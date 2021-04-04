@@ -147,8 +147,13 @@ public class EnemyController : MonoBehaviour
 
     void UpdateEnemyControllerFSM()
     {
+        if (state == "idle")
+        {
+            agent.isStopped = true;
+            anim.SetBool("idle", true);
+        }
 
-        if(state == "dead")
+        if (state == "dead")
         {
             agent.isStopped = true;
             anim.SetBool("dead", true);

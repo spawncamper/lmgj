@@ -57,6 +57,11 @@ public class SceneLoader : MonoBehaviour
         yield return new WaitForSeconds(delay);
     }
 
+    public void OpenMainMenuMethod()
+    {
+        StartCoroutine(OpenMainMenu());
+    }
+
     public void LoadLevelAsync(string levelName)
     {
         AsyncOperation asyncOp = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);

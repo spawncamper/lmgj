@@ -24,6 +24,11 @@ public class CMVCTargetAssign : MonoBehaviour
     {
         var vcam = GetComponent<CinemachineVirtualCamera>();
 
+        if (vcam == null)
+        {
+            Debug.LogError("[CMVCTargetAssign] vcam is null");
+        }
+
         player = GameObject.FindGameObjectWithTag("Player");
 
         if (player == null)
@@ -33,5 +38,7 @@ public class CMVCTargetAssign : MonoBehaviour
 
 //        vcam.LookAt = player.transform;
         vcam.Follow = player.transform;
+
+        print("vcam on player");
     }
 }

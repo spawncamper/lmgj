@@ -70,17 +70,24 @@ public class GameManager : MonoBehaviour
                 GameOverEvent();
 
             sceneLoader = FindObjectOfType<SceneLoader>();
+
+            if (sceneLoader == null)
+            {
+                Debug.LogError("[GameManager] GameLoop() sceneLoader == null");
+            }
             
-            sceneLoader.LoadLevelAsync("MainMenu");
+            sceneLoader.OpenMainMenuMethod();
 
-            yield return new WaitForSeconds(gameOverDelay);
+            yield return new WaitForSeconds(gameOverDelay * 1);
 
-            Debug.LogError("[GameManager] " + gameObject.name + "gameOverDelay exceeded");
+//            Debug.LogError("[GameManager] " + gameObject.name + "gameOverDelay exceeded");
 
             //            StartCoroutine(GameLoop());
         }
         else
         {
+            Debug.LogWarning("[GameManager] GameLoop() gameWon != false");
+
             if (GameWonEvent != null)
                 GameWonEvent();
 
