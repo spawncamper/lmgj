@@ -312,6 +312,9 @@ public class EnemyController : MonoBehaviour
 
         yield return new WaitForSeconds(corpseRemainingDelay);
 
+        if (EnemyDeathEvent != null)
+            EnemyDeathEvent();
+
         Destroy(gameObject);
     }
 
