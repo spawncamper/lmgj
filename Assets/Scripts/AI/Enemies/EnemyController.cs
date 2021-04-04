@@ -161,7 +161,9 @@ public class EnemyController : MonoBehaviour
             if (EnemyDeathEvent != null)
                 EnemyDeathEvent();
 
-            Destroy(this.gameObject, corpseRemainingDelay);
+            print("[EnemyController] destroy self " + gameObject.name);
+
+            Destroy(gameObject, corpseRemainingDelay);
         }
 
         if (state == "kill")
@@ -175,6 +177,8 @@ public class EnemyController : MonoBehaviour
 
                 if (PlayerDeathEvent != null)
                     PlayerDeathEvent();
+
+                StartCoroutine(DestroySelf());
             }
             if (agent.remainingDistance > 20f)
             {
@@ -297,6 +301,18 @@ public class EnemyController : MonoBehaviour
             state = "thinking";
         }
         agent.isStopped = false;
+    }
+
+    IEnumerator DestroySelf()
+    {
+        agent.isStopped = true;
+        anim.SetBool("dead", true);
+
+        print("[EnemyController] Destroy Self " + gameObject.name);
+
+        yield return new WaitForSeconds(corpseRemainingDelay);
+
+        Destroy(gameObject);
     }
 
 }
