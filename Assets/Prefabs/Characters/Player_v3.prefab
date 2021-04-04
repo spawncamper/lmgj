@@ -2620,7 +2620,6 @@ GameObject:
   - component: {fileID: 6430120698580256293}
   - component: {fileID: 2924407600700343912}
   - component: {fileID: 2719644297931763382}
-  - component: {fileID: 2005130062889730533}
   - component: {fileID: 5203625786303160899}
   m_Layer: 0
   m_Name: Player_v3
@@ -2791,20 +2790,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2005130062889730533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2463179075415596392}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a11c011821fb47e43b7ca212b45d094f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialCoins: 20
-  coinPrefab: {fileID: 6395726071627537933, guid: 7c230414c9919f846b1eeac9800cf415, type: 3}
 --- !u!114 &5203625786303160899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2817,6 +2802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 476d3bd6d8ffe064496dac49775b33ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 6395726071627537933, guid: 7c230414c9919f846b1eeac9800cf415, type: 3}
 --- !u!1 &2463179075415596394
 GameObject:
   m_ObjectHideFlags: 0

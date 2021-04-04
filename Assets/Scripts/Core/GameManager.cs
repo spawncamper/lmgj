@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
     {
         if (playerPrefab != null && playerSpawnPoint != null)
         {
-            if (isPlayerDead == false && FindObjectOfType<PlayerClass>() == null)
+            if (FindObjectOfType<PlayerClass>() == null)
             {
                 GameObject playerInstance = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity) as GameObject;
                 playerInstance.transform.parent = gameObject.transform;
@@ -196,6 +196,10 @@ public class GameManager : MonoBehaviour
                     PlayerSpawnedEvent();
 
                 isPlayerDead = false;
+            }
+            else
+            {
+                Debug.LogError("[GameManager] PlayerClass is not Null");
             }
         }
         else if (playerPrefab == null)

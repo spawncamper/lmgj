@@ -42,8 +42,6 @@ public class UIManager : MonoBehaviour
 
         sceneLoader = FindObjectOfType<SceneLoader>();
 
-        coinController = FindObjectOfType<CoinController>();
-
         //       activeScene = SceneManager.GetActiveScene().name;
 
         //       print("[UIManager] activeScene " + activeScene);
@@ -109,6 +107,11 @@ public class UIManager : MonoBehaviour
 
     void UpdateScore()
     {
+        coinController = FindObjectOfType<CoinController>();
+
+        if (coinController == null)
+            Debug.LogError("[UIManager] coinController is null");
+
         currentCoins = coinController.ReturnCurrentCoins();
 
         scoreText.text = currentCoins.ToString();
