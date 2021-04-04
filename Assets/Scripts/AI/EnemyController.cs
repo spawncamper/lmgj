@@ -24,7 +24,7 @@ public class EnemyController : MonoBehaviour
 
     Animator anim;
 
-    CoinController cc;
+    CoinController coinController;
 
     public delegate void PlayerDeath();
     public static event PlayerDeath PlayerDeathEvent;
@@ -35,7 +35,7 @@ public class EnemyController : MonoBehaviour
         anim = GetComponent<Animator>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         destination = transform.position;
-        cc = GameObject.FindGameObjectWithTag("Player").GetComponent<CoinController>();
+        coinController = GameObject.FindGameObjectWithTag("Player").GetComponent<CoinController>();
 
         GameObject[] wptList = GameObject.FindGameObjectsWithTag("waypoint");
         if (wptList.Length > 0)
@@ -151,7 +151,7 @@ public class EnemyController : MonoBehaviour
         {
             agent.isStopped = true;
             anim.SetBool("dead", true);
-            cc.AddCoins(HaveCoins);
+            coinController.AddCoins(HaveCoins);
             HaveCoins = 0;
             Destroy(this.gameObject, corpseRemainingDelay);
         }
