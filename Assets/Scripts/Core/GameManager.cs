@@ -54,8 +54,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        audioManager = FindObjectOfType<AudioManager>();
-
         StartCoroutine(GameLoop());
     }
 
@@ -95,7 +93,7 @@ public class GameManager : MonoBehaviour
     {        
         print("Round starting");
 
-        isPlayerDead = true;
+        audioManager = FindObjectOfType<AudioManager>();
 
         if (playIntro)
         {
@@ -187,13 +185,24 @@ public class GameManager : MonoBehaviour
     {
         if (playerPrefab != null && playerSpawnPoint != null)
         {
-            GameObject playerInstance = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity) as GameObject;
-            playerInstance.transform.parent = gameObject.transform;
+            if (isPlayerDead == false && FindObjectOfType<PlayerClass>() == null)
+            {
+                GameObject playerInstance = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity) as GameObject;
+                playerInstance.transform.parent = gameObject.transform;
 
-            if (PlayerSpawnedEvent != null)
-                PlayerSpawnedEvent();
+                if (PlayerSpawnedEvent != null)
+                    PlayerSpawnedEvent();
 
-            isPlayerDead = false;
+                isPlayerDead = false;
+            }
+        }
+        else if (playerPrefab == null)
+        {
+            Debug.LogError("[GameManager] SpawnPlayer() playerPrefab is null");
+        }
+        else if (playerSpawnPoint == null)
+        {
+            Debug.LogError("[GameManager] SpawnPlayer() playerSpawnPoint is null");
         }
     }
 
