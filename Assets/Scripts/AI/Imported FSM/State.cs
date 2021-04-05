@@ -1,14 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI; // Added since we're using a navmesh.
+﻿using UnityEngine;
+using UnityEngine.AI; 
 
 public class State
 {
-    // 'States' that the NPC could be in.
     public enum STATE
     {
-        IDLE, PATROL, PURSUE, ATTACK, SLEEP, RUNAWAY
+        IDLE, THINKING, ROAMING, LOOKNGFORMORE, GREED, DEAD, KILL
     };
 
     // 'Events' - where we are in the running of a STATE.
@@ -24,10 +21,6 @@ public class State
     protected Transform player; // To store the transform of the player. This will let the guard know where the player is, so it can face the player and know whether it should be shooting or chasing (depending on the distance).
     protected State nextState; // This is NOT the enum above, it's the state that gets to run after the one currently running (so if IDLE was then going to PATROL, nextState would be PATROL).
     protected NavMeshAgent agent; // To store the NPC NavMeshAgent component.
-
-    float visDist = 10.0f; // When the player is within a distance of 10 from the NPC, then the NPC should be able to see it...
-    float visAngle = 30.0f; // ...if the player is within 30 degrees of the line of sight.
-    float shootDist = 7.0f; // When the player is within a distance of 7 from the NPC, then the NPC can go into an ATTACK state.
 
     // Constructor for State
     public State(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
@@ -60,14 +53,6 @@ public class State
     // Can the NPC see the player, using a simple Line Of Sight calculation?
     public bool CanSeePlayer()
     {
-        Vector3 direction = player.position - npc.transform.position; // Provides the vector from the NPC to the player.
-        float angle = Vector3.Angle(direction, npc.transform.forward); // Provide angle of sight.
-
-        // If player is close enough to the NPC AND within the visible viewing angle...
-        if(direction.magnitude < visDist && angle < visAngle)
-        {
-            return true; // NPC CAN see the player.
-        }
         return false; // NPC CANNOT see the player.
     }
 
@@ -86,11 +71,6 @@ public class State
 
     public bool CanAttackPlayer()
     {
-        Vector3 direction = player.position - npc.transform.position; // Provides the vector from the NPC to the player.
-        if(direction.magnitude < shootDist)
-        {
-            return true; // NPC IS close enough to the player to attack.
-        }
         return false; // NPC IS NOT close enough to the player to attack.
     }
 }
@@ -119,7 +99,7 @@ public class Idle : State
         // The only place where Update can break out of itself. Set chance of breaking out at 10%.
         else if(Random.Range(0,100) < 10)
         {
-            nextState = new Patrol(npc, agent, anim, player);
+            nextState = new Roaming(npc, agent, anim, player);
             stage = EVENT.EXIT; // The next time 'Process' runs, the EXIT stage will run instead, which will then return the nextState.
         }
     }
@@ -132,32 +112,21 @@ public class Idle : State
 }
 
 // Constructor for Patrol state.
-public class Patrol : State
+public class Roaming : State
 {
     int currentIndex = -1;
-    public Patrol(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
+    public Roaming(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
                 : base(_npc, _agent, _anim, _player)
     {
-        name = STATE.PATROL; // Set name of current state.
+        name = STATE.ROAMING; // Set name of current state.
         agent.speed = 2; // How fast your character moves ONLY if it has a path. Not used in Idle state since agent is stationary.
         agent.isStopped = false; // Start and stop agent on current path using this bool.
     }
 
     public override void Enter()
     {
-        float lastDist = Mathf.Infinity; // Store distance between NPC and waypoints.
+        // Calculate the closest Waypoint
 
-        // Calculate closest waypoint by looping around each one and calculating the distance between the NPC and each waypoint.
-        for (int i = 0; i < GameEnvironment.Singleton.Checkpoints.Count; i++)
-        {
-            GameObject thisWP = GameEnvironment.Singleton.Checkpoints[i];
-            float distance = Vector3.Distance(npc.transform.position, thisWP.transform.position);
-            if(distance < lastDist)
-            {
-                currentIndex = i - 1; // Need to subtract 1 because in Update, we add 1 to i before setting the destination.
-                lastDist = distance;
-            }
-        }
         anim.SetTrigger("isWalking"); // Start agent walking animation.
         base.Enter();
     }
@@ -165,17 +134,8 @@ public class Patrol : State
     public override void Update()
     {
         // Check if agent hasn't finished walking between waypoints.
-        if(agent.remainingDistance < 1)
-        {
             // If agent has reached end of waypoint list, go back to the first one, otherwise move to the next one.
-            if (currentIndex >= GameEnvironment.Singleton.Checkpoints.Count - 1)
-                currentIndex = 0;
-            else
-                currentIndex++;
-
-            agent.SetDestination(GameEnvironment.Singleton.Checkpoints[currentIndex].transform.position); // Set agents destination to position of next waypoint.
-        }
-
+ 
         if (CanSeePlayer())
         {
             nextState = new Pursue(npc, agent, anim, player);

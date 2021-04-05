@@ -87,62 +87,6 @@ public class EnemyController : MonoBehaviour
             }
 
         }
-
-    }
-
-
-    public void CoinSpotted(Collider coin)
-    {
-        Debug.Log("CoinSpotted!");
-        if (state == "roaming" || state == "thinking" || state == "LookingForMore" || state == "idle" || state == "greed" )
-        {
-            state = "greed";
-            if(!treasure)
-            {
-                agent.SetDestination(coin.gameObject.transform.position);
-                treasure = coin.gameObject;
-            }
-            else
-            {
-                float curDist = Mathf.Abs(Vector3.Distance(agent.transform.position, agent.destination/*treasure.transform.position*/));
-                float newDist = Mathf.Abs(Vector3.Distance(agent.transform.position, coin.gameObject.transform.position));
-                Debug.DrawLine(agent.transform.position, agent.destination, Color.green);
-                Debug.DrawLine(agent.transform.position, agent.destination, Color.red);
-                Debug.Log(curDist.ToString("F3") + "   " + newDist.ToString("F3"));
-                if (curDist > newDist)
-                {
-                    agent.SetDestination(coin.gameObject.transform.position);
-                    Debug.Log("Change target!" + coin.gameObject.transform.position.ToString("F3"));
-                    treasure = coin.gameObject;
-                }
-            }
-           
-            gameObject.GetComponentInChildren<SightController>().SetMode("disabled"); //отключаем зрение, пока идем к монетке
-        }
-        
-    }
-
-
-    public void dead()
-    {
-        state = "dead";
-    }
-
-
-    public void PlayerSpotted(Collider Player)
-    {
-        Debug.Log("PlayerSpotted!");
-      
-        state = "kill";
-
-        if (!player)
-        {
-            agent.SetDestination(Player.gameObject.transform.position);
-            player = Player.gameObject;
-            agent.speed = agent.speed * 2;
-        }
-
-        gameObject.GetComponentInChildren<SightController>().SetMode("disabled"); //отключаем зрение, пока гонимся за ГГ
     }
 
 
@@ -227,8 +171,6 @@ public class EnemyController : MonoBehaviour
 
         }
 
-
-
         if (state == "thinking")
         {
             if (memoryIndex == 0)
@@ -297,6 +239,61 @@ public class EnemyController : MonoBehaviour
 
             }
         }
+    }
+
+
+    public void CoinSpotted(Collider coin)
+    {
+        Debug.Log("CoinSpotted!");
+        if (state == "roaming" || state == "thinking" || state == "LookingForMore" || state == "idle" || state == "greed")
+        {
+            state = "greed";
+            if (!treasure)
+            {
+                agent.SetDestination(coin.gameObject.transform.position);
+                treasure = coin.gameObject;
+            }
+            else
+            {
+                float curDist = Mathf.Abs(Vector3.Distance(agent.transform.position, agent.destination/*treasure.transform.position*/));
+                float newDist = Mathf.Abs(Vector3.Distance(agent.transform.position, coin.gameObject.transform.position));
+                Debug.DrawLine(agent.transform.position, agent.destination, Color.green);
+                Debug.DrawLine(agent.transform.position, agent.destination, Color.red);
+                Debug.Log(curDist.ToString("F3") + "   " + newDist.ToString("F3"));
+                if (curDist > newDist)
+                {
+                    agent.SetDestination(coin.gameObject.transform.position);
+                    Debug.Log("Change target!" + coin.gameObject.transform.position.ToString("F3"));
+                    treasure = coin.gameObject;
+                }
+            }
+
+            gameObject.GetComponentInChildren<SightController>().SetMode("disabled"); //отключаем зрение, пока идем к монетке
+        }
+
+    }
+
+
+    public void dead()
+    {
+        state = "dead";
+    }
+
+
+    public void PlayerSpotted(Collider Player)
+    {
+        Debug.Log("PlayerSpotted!");
+
+        state = "kill";
+
+        if (!player)
+        {
+            agent.SetDestination(Player.gameObject.transform.position);
+            player = Player.gameObject;
+            agent.speed = agent.speed * 2;
+        }
+
+        gameObject.GetComponentInChildren<SightController>().SetMode("disabled"); //отключаем зрение, пока гонимся за ГГ
     }
 
     IEnumerator LookingAround()
