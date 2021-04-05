@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
-
 public class GameManager : MonoBehaviour
 {
     // Location: Game Manager object in the Scene hierarchy

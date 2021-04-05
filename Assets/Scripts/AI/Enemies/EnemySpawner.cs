@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -14,12 +13,14 @@ public class EnemySpawner : MonoBehaviour
 
     void OnEnable()
     {
-        GameManager.RoundStartedEvent += StartSpawning;
+//        GameManager.RoundStartedEvent += StartSpawning;
+        GameManager.RoundStartedEvent += SpawnOnce;
     }
 
     void OnDisable()
     {
-        GameManager.RoundStartedEvent -= StartSpawning;
+//        GameManager.RoundStartedEvent -= StartSpawning;
+        GameManager.RoundStartedEvent -= SpawnOnce;
     }
 
     IEnumerator StartSpawningCoroutine()
@@ -36,6 +37,11 @@ public class EnemySpawner : MonoBehaviour
         isSpawning = true;
 
         StartCoroutine(StartSpawningCoroutine());
+    }
+
+    void SpawnOnce()
+    {
+        SpawnEnemy();
     }
 
 

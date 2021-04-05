@@ -34,11 +34,16 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        state = "idle";
+        
         anim = GetComponent<Animator>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         enemyClass = GetComponent<EnemyClass>();
 
         destination = transform.position;
+
+
+        // Start-up Get the Waypoints
 
         GameObject[] wptList = GameObject.FindGameObjectsWithTag("waypoint");
 

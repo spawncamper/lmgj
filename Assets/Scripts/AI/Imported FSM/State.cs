@@ -5,7 +5,7 @@ public class State
 {
     public enum STATE
     {
-        IDLE, THINKING, ROAMING, LOOKNGFORMORE, GREED, DEAD, KILL
+        IDLE, THINKING, ROAMING, LOOKNGFORMORE, GREED, DEAD, KILL, SLEEP
     };
 
     // 'Events' - where we are in the running of a STATE.
@@ -93,14 +93,14 @@ public class Idle : State
     {
         if (CanSeePlayer())
         {
-            nextState = new Pursue(npc, agent, anim, player);
-            stage = EVENT.EXIT; // The next time 'Process' runs, the EXIT stage will run instead, which will then return the nextState.
+ //           nextState = new Pursue(npc, agent, anim, player);
+ //           stage = EVENT.EXIT; // The next time 'Process' runs, the EXIT stage will run instead, which will then return the nextState.
         }
         // The only place where Update can break out of itself. Set chance of breaking out at 10%.
         else if(Random.Range(0,100) < 10)
         {
-            nextState = new Roaming(npc, agent, anim, player);
-            stage = EVENT.EXIT; // The next time 'Process' runs, the EXIT stage will run instead, which will then return the nextState.
+//            nextState = new Roaming(npc, agent, anim, player);
+//            stage = EVENT.EXIT; // The next time 'Process' runs, the EXIT stage will run instead, which will then return the nextState.
         }
     }
 
@@ -138,14 +138,14 @@ public class Roaming : State
  
         if (CanSeePlayer())
         {
-            nextState = new Pursue(npc, agent, anim, player);
-            stage = EVENT.EXIT; // The next time 'Process' runs, the EXIT stage will run instead, which will then return the nextState.
+ //           nextState = new Pursue(npc, agent, anim, player);
+ //           stage = EVENT.EXIT; // The next time 'Process' runs, the EXIT stage will run instead, which will then return the nextState.
         }
 
         else if (IsPlayerBehind())
         {
-            nextState = new RunAway(npc, agent, anim, player);
-            stage = EVENT.EXIT; // The next time 'Process' runs, the EXIT stage will run instead, which will then return the nextState.
+//            nextState = new RunAway(npc, agent, anim, player);
+//            stage = EVENT.EXIT; // The next time 'Process' runs, the EXIT stage will run instead, which will then return the nextState.
         }
     }
 
@@ -156,12 +156,12 @@ public class Roaming : State
     }
 }
 
-public class Pursue : State
+public class LookingForMore : State
 {
-    public Pursue(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
+    public LookingForMore(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
                 : base(_npc, _agent, _anim, _player)
     {
-        name = STATE.PURSUE; // State set to match what NPC is doing.
+        name = STATE.LOOKNGFORMORE; // State set to match what NPC is doing.
         agent.speed = 5; // Speed set to make sure NPC appears to be running.
         agent.isStopped = false; // Set bool to determine NPC is moving.
     }
@@ -179,14 +179,14 @@ public class Pursue : State
         {
             if (CanAttackPlayer())
             {
-                nextState = new Attack(npc, agent, anim, player); // If NPC can attack player, set correct nextState.
-                stage = EVENT.EXIT; // Set stage correctly as we are finished with Pursue state.
+ //               nextState = new Attack(npc, agent, anim, player); // If NPC can attack player, set correct nextState.
+ //               stage = EVENT.EXIT; // Set stage correctly as we are finished with Pursue state.
             }
             // If NPC can't see the player, switch back to Patrol state.
             else if (!CanSeePlayer())
             {
-                nextState = new Patrol(npc, agent, anim, player); // If NPC can't see player, set correct nextState.
-                stage = EVENT.EXIT; // Set stage correctly as we are finished with Pursue state.
+//                nextState = new Patrol(npc, agent, anim, player); // If NPC can't see player, set correct nextState.
+//                stage = EVENT.EXIT; // Set stage correctly as we are finished with Pursue state.
             }
         }
     }
@@ -198,14 +198,14 @@ public class Pursue : State
     }
 }
 
-public class Attack : State
+public class Kill : State
 {
     float rotationSpeed = 2.0f; // Set speed that NPC will rotate around to face player.
     AudioSource shoot; // To store the AudioSource component.
-    public Attack(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
+    public Kill(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
                 : base(_npc, _agent, _anim, _player)
     {
-        name = STATE.ATTACK; // Set name to correct state.
+        name = STATE.KILL; // Set name to correct state.
         shoot = _npc.GetComponent<AudioSource>(); // Get AudioSource component for shooting sound.
     }
 
@@ -240,43 +240,6 @@ public class Attack : State
     {
         anim.ResetTrigger("isShooting"); // Makes sure that any events queued up for Shooting are cleared out.
         shoot.Stop(); // Stop shooting sound.
-        base.Exit();
-    }
-}
-
-public class RunAway : State
-{
-    GameObject safeLocation; // Store object used for safe location.
-    
-    public RunAway(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
-                : base(_npc, _agent, _anim, _player)
-    {
-        name = STATE.RUNAWAY; // Set name to correct state.
-        safeLocation = GameObject.FindGameObjectWithTag("Safe"); // Find object that was tagged with "Safe" and assign top safeLocation.
-    }
-
-    public override void Enter()
-    {
-        anim.SetTrigger("isRunning"); // Set running trigger to change animation.
-        agent.isStopped = false; // Set bool to determine NPC is moving.
-        agent.speed = 6; // Set speed slightly fsater than when running towards player.
-        agent.SetDestination(safeLocation.transform.position); // Set goal for agent to be the safe location.
-        base.Enter();
-    }
-
-    public override void Update()
-    {
-        // When the NPC hits the top of the cube, return to the Idle state that has a 10% chance of going into Patrol state.
-        if (agent.remainingDistance < 1)
-        {
-            nextState = new Idle(npc, agent, anim, player); // If NPC can't attack player, set correct nextState.
-            stage = EVENT.EXIT; // Set stage correctly as we are finished with Runaway state.
-        }
-    }
-
-    public override void Exit()
-    {
-        anim.ResetTrigger("isRunning"); // Makes sure that any events queued up for Running are cleared out.
         base.Exit();
     }
 }
