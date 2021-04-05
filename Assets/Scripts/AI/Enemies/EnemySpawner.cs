@@ -42,6 +42,9 @@ public class EnemySpawner : MonoBehaviour
     void SpawnOnce()
     {
         SpawnEnemy();
+        SpawnEnemy();
+        SpawnEnemy();
+        SpawnEnemy();
     }
 
 

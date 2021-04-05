@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator RoundEnding()
-    {
+    {        
         print("Round Ending Started");
 
         //        isPlayerDead = false;
