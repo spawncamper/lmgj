@@ -48,16 +48,6 @@ public class UIManager : MonoBehaviour
         //        buildIndex = activeScene.buildIndex;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            print("press Esc");
-
-            GoToMainMenu();
-        }
-    }
-
     public void StartGameButton()
     {
         sceneLoader.LoadLevelAsync(Level01);
@@ -67,42 +57,6 @@ public class UIManager : MonoBehaviour
     public void QuitGameButton()
     {
         sceneLoader.QuitGame();
-    }
-
-    void GoToMainMenu()
-    {
-        loadedScenes = sceneLoader.GetOpenScenes();
-
-        foreach (Scene scene in loadedScenes)
-        {
-            activeScene = scene.name;
-
-            print(activeScene);
-
-            if (activeScene == bootScene)
-            {
-                continue;
-            }
-
-            if (activeScene == mainMenu)
-            {
-                continue;
-            }
-
-            Debug.Log("[UIManager] Update loop, foreach Scene scene in loadedScenes");
-
-            StartCoroutine(GoToMainMenuCoroutine());
-
-            break;
-        }
-    }
-
-    IEnumerator GoToMainMenuCoroutine()
-    {
-        sceneLoader.LoadLevelAsync(mainMenu);
-        yield return new WaitForSeconds(delay);
-        sceneLoader.UnloadLevelAsync(loadedScenes[1].name);
-        yield return new WaitForSeconds(delay);
     }
 
     void UpdateScore()

@@ -8,9 +8,13 @@ public class SceneLoader : MonoBehaviour
     // Location: on the BOOT object in the boot scene
 
     [SerializeField] GameObject corePrefab;
+    [SerializeField] string bootScene;
     [SerializeField] string mainMenu;
     [SerializeField] string GameScene01;
+    string activeScene;
     [SerializeField] float delay = 1f;
+
+    Scene[] loadedScenes;
 
     static bool corePrefabsSpawned = false;    // hasSpawned
     public static SceneLoader Instance;
@@ -47,10 +51,56 @@ public class SceneLoader : MonoBehaviour
 
         loadOperations = new List<AsyncOperation>();
 
-        StartCoroutine(OpenMainMenu());
+        StartCoroutine(OpenMainMenuFromBoot());
     }
 
-    IEnumerator OpenMainMenu()
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            print("press Esc");
+
+            GoToMainMenu();
+        }
+    }
+
+    void GoToMainMenu()
+    {
+        loadedScenes = GetOpenScenes();
+
+        foreach (Scene scene in loadedScenes)
+        {
+            activeScene = scene.name;
+
+            print(activeScene);
+
+            if (activeScene == bootScene)
+            {
+                continue;
+            }
+
+            if (activeScene == mainMenu)
+            {
+                continue;
+            }
+
+            Debug.Log("[UIManager] Update loop, foreach Scene scene in loadedScenes");
+
+            StartCoroutine(GoToMainMenuCoroutine());
+
+            break;
+        }
+    }
+
+    IEnumerator GoToMainMenuCoroutine()
+    {
+        LoadLevelAsync(mainMenu);
+        yield return new WaitForSeconds(delay);
+        UnloadLevelAsync(loadedScenes[1].name);
+        yield return new WaitForSeconds(delay);
+    }
+
+    IEnumerator OpenMainMenuFromBoot()
     {
         LoadLevelAsync(mainMenu);
         Debug.Log("[SceneLoader] Open main menu");
@@ -59,7 +109,7 @@ public class SceneLoader : MonoBehaviour
 
     public void OpenMainMenuMethod()
     {
-        StartCoroutine(OpenMainMenu());
+        StartCoroutine(OpenMainMenuFromBoot());
     }
 
     public void LoadLevelAsync(string levelName)
