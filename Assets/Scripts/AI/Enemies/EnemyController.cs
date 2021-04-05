@@ -20,6 +20,7 @@ public class EnemyController : MonoBehaviour
 
     private GameObject player;
     EnemyClass enemyClass;
+    GameManager gameManager;
 
     UnityEngine.AI.NavMeshAgent agent;
 
@@ -39,9 +40,11 @@ public class EnemyController : MonoBehaviour
         anim = GetComponent<Animator>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         enemyClass = GetComponent<EnemyClass>();
+        gameManager = FindObjectOfType<GameManager>();
 
         destination = transform.position;
 
+ //       gameManager.EnemyControllerUpdate(gameObject);
 
         // Start-up Get the Waypoints
 
