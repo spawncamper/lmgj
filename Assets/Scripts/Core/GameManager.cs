@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour
 
         //        isPlayerDead = false;
 
-        DestroyPlayerObject();
+//        DestroyPlayerObject();
 
         yield return endWaitTime;
     }
@@ -198,7 +198,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError("[GameManager] PlayerClass is not Null");
+                Debug.LogError("[GameManager] SpawnPlayer() PlayerClass is not Null ");
             }
         }
         else if (playerPrefab == null)
@@ -208,27 +208,6 @@ public class GameManager : MonoBehaviour
         else if (playerSpawnPoint == null)
         {
             Debug.LogError("[GameManager] SpawnPlayer() playerSpawnPoint is null");
-        }
-    }
-
-    void DestroyPlayerObject()
-    {
-        var playerInstance = FindObjectOfType<PlayerClass>();
-
-        if (playerInstance != null)
-        {
-            Destroy(playerInstance);
-
-            print("[GameManager] DestroyPlayer() player destroyed");
-
-            if (playerInstance != null)
-            {
-                Debug.LogError("[GameManager] DestroyPlayer() playerInstance was not destroyed");
-            }    
-        }
-        else
-        {
-            Debug.LogError("[GameManager] playerInstance == null");
         }
     }
 
@@ -258,6 +237,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator TutorialCoroutine()
     {
+        print("[GameManager] Tutorial Coroutine has started");
+        
         tutorialText.text = "HELLO ADVENTURER!";
         yield return new WaitForSeconds(messageTextTimerDelay * 0.75f);
         tutorialText.text = "WELCOME TO RAGE OF RICHES";

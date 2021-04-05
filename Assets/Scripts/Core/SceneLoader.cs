@@ -16,7 +16,7 @@ public class SceneLoader : MonoBehaviour
 
     Scene[] loadedScenes;
 
-    static bool corePrefabsSpawned = false;    // hasSpawned
+    static bool corePrefabsSpawned = false;   
     public static SceneLoader Instance;
 
     private string currentLevelName = string.Empty;
@@ -103,7 +103,7 @@ public class SceneLoader : MonoBehaviour
     IEnumerator OpenMainMenuFromBoot()
     {
         LoadLevelAsync(mainMenu);
-        Debug.Log("[SceneLoader] Open main menu");
+        Debug.Log("[SceneLoader] OpenMainMenuFromBoot ()");
         yield return new WaitForSeconds(delay);
     }
 

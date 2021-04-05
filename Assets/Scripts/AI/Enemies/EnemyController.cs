@@ -94,7 +94,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-
     void Update()
     {
         if (state == "dead")
@@ -278,12 +277,10 @@ public class EnemyController : MonoBehaviour
 
     }
 
-
     public void dead()
     {
         state = "dead";
     }
-
 
     public void PlayerSpotted(Collider Player)
     {
