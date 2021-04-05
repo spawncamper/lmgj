@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerClass : MonoBehaviour, IKillable
+public class PlayerClass : MonoBehaviour, IKillable // IKillable = ICharacter
 {
     [SerializeField] float playerDeathEventDelay;
 

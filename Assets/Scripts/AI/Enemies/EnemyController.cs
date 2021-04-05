@@ -41,6 +41,7 @@ public class EnemyController : MonoBehaviour
         destination = transform.position;
 
         GameObject[] wptList = GameObject.FindGameObjectsWithTag("waypoint");
+
         if (wptList.Length > 0)
         {
             waypoints = new Transform[wptList.Length];
@@ -50,29 +51,36 @@ public class EnemyController : MonoBehaviour
                 //waypoints[i] = new Transform();
             }
         }
+        else
+        {
+            Debug.LogError("[EnemyController] " + gameObject.name + "wprList.Length <= 0");
+        }
 
         if (waypoints.Length == 0)
         {
-            //Debug.LogError("No waypoints set - idle");
+            Debug.LogError("[EnemyController] " + gameObject.name + "No waypoints set - idle");
             state = "idle";
         }
         else
         {
             state = "thinking";
+            print("[EnemyController] " + gameObject.name + "State Thinking");
         }
+        
         string pointsText = "";
+        
         for (int i = 0; i < waypoints.Length; i++)
         {
             pointsText += " i:" + i + "  vector:" + waypoints[i].position.ToString("F3") + ";    ";
         }
-        //Debug.Log(pointsText);
+        Debug.Log(pointsText);
 
         //очищаем память
         if (waypoints.Length > 0)
         {
             PointsMemory = new Vector3[waypoints.Length];
             memoryIndex = 0;
-            //Debug.Log("Clearing memory");
+            Debug.Log("Clearing memory");
             for (int i = 0; i < PointsMemory.Length; i++)
             {
                 PointsMemory.SetValue(new Vector3(0, 0, 0), i);
@@ -85,7 +93,7 @@ public class EnemyController : MonoBehaviour
 
     public void CoinSpotted(Collider coin)
     {
-        //Debug.Log("CoinSpotted!");
+        Debug.Log("CoinSpotted!");
         if (state == "roaming" || state == "thinking" || state == "LookingForMore" || state == "idle" || state == "greed" )
         {
             state = "greed";
@@ -98,9 +106,9 @@ public class EnemyController : MonoBehaviour
             {
                 float curDist = Mathf.Abs(Vector3.Distance(agent.transform.position, agent.destination/*treasure.transform.position*/));
                 float newDist = Mathf.Abs(Vector3.Distance(agent.transform.position, coin.gameObject.transform.position));
-                //Debug.DrawLine(agent.transform.position, agent.destination, Color.green);
-                //Debug.DrawLine(agent.transform.position, agent.destination, Color.red);
-               // Debug.Log(curDist.ToString("F3") + "   " + newDist.ToString("F3"));
+                Debug.DrawLine(agent.transform.position, agent.destination, Color.green);
+                Debug.DrawLine(agent.transform.position, agent.destination, Color.red);
+                Debug.Log(curDist.ToString("F3") + "   " + newDist.ToString("F3"));
                 if (curDist > newDist)
                 {
                     agent.SetDestination(coin.gameObject.transform.position);
@@ -123,7 +131,7 @@ public class EnemyController : MonoBehaviour
 
     public void PlayerSpotted(Collider Player)
     {
-        //Debug.Log("PlayerSpotted!");
+        Debug.Log("PlayerSpotted!");
       
         state = "kill";
 
@@ -131,18 +139,22 @@ public class EnemyController : MonoBehaviour
         {
             agent.SetDestination(Player.gameObject.transform.position);
             player = Player.gameObject;
-           // agent.speed = agent.speed * 2;
+            agent.speed = agent.speed * 2;
         }
 
         gameObject.GetComponentInChildren<SightController>().SetMode("disabled"); //отключаем зрение, пока гонимся за ГГ
     }
 
 
-    // Update is called once per frame
     void Update()
     {
         if (state == "dead")
+        {
+            print("[EnemyController] state == dead " + gameObject.name);
+
             return;
+        }
+
 
         if (!GameManager.isPlayerDead)
         {
@@ -197,7 +209,7 @@ public class EnemyController : MonoBehaviour
 
         if (state == "greed")
         {
-            //Debug.DrawLine(agent.transform.position, treasure.transform.position, Color.yellow);
+            Debug.DrawLine(agent.transform.position, treasure.transform.position, Color.yellow);
             if (agent.remainingDistance < 0.2f) //взяли монетку
             {
                 Destroy(treasure, 0);
@@ -208,8 +220,9 @@ public class EnemyController : MonoBehaviour
 
         if (state == "LookingForMore")
         {
-            //gameObject.GetComponent<SightController>().SetMode("wide"); //включаем зрение в широкий режим
-            gameObject.GetComponentInChildren<SightController>().SetMode("wide"); //включаем зрение в широкий режим
+            print("[EnemyController] " + gameObject.name + "STATE LookingFormore");
+            gameObject.GetComponent<SightController>().SetMode("wide"); //включаем зрение в широкий режим
+           // gameObject.GetComponentInChildren<SightController>().SetMode("wide"); //включаем зрение в широкий режим
             StartCoroutine(LookingAround()); //оглядываемся и ждем
 
         }
