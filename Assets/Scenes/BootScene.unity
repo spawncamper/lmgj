@@ -163,7 +163,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1988447183}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 151e5a73df9a11a4a981a039546863dd, type: 3}
   m_Name: 
@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   corePrefab: {fileID: 8246533678523478908, guid: 063189d68afbc1d43bb40473ae3ab25f, type: 3}
+  bootScene: BootScene
   mainMenu: MainMenu
   GameScene01: GameScene01
   delay: 1

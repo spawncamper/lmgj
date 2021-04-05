@@ -157,7 +157,7 @@ public class EnemyController : MonoBehaviour
 
         if (state == "greed")
         {
-            Debug.DrawLine(agent.transform.position, treasure.transform.position, Color.yellow);
+ //           Debug.DrawLine(agent.transform.position, treasure.transform.position, Color.yellow);
             if (agent.remainingDistance < 0.2f) //взяли монетку
             {
                 Destroy(treasure, 0);
