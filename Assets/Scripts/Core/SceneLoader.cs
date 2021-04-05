@@ -64,7 +64,7 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    void GoToMainMenu()
+    public void GoToMainMenu()
     {
         loadedScenes = GetOpenScenes();
 

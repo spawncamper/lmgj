@@ -68,6 +68,8 @@ public class GameManager : MonoBehaviour
             if (GameOverEvent != null)
                 GameOverEvent();
 
+            print("[GameManager] Round LOST -- GAME OVER");
+
             sceneLoader = FindObjectOfType<SceneLoader>();
 
             if (sceneLoader == null)
@@ -75,11 +77,11 @@ public class GameManager : MonoBehaviour
                 Debug.LogError("[GameManager] GameLoop() sceneLoader == null");
             }
             
-            sceneLoader.OpenMainMenuMethod();
+            sceneLoader.GoToMainMenu();
 
-            yield return new WaitForSeconds(gameOverDelay * 1);
+            yield return new WaitForSeconds(gameOverDelay * 5);
 
-//            Debug.LogError("[GameManager] " + gameObject.name + "gameOverDelay exceeded");
+            Debug.LogError("[GameManager] " + gameObject.name + "gameOverDelay exceeded");
 
             //            StartCoroutine(GameLoop());
         }
@@ -159,7 +161,7 @@ public class GameManager : MonoBehaviour
 
         //        isPlayerDead = false;
 
-        DestroyPlayer();
+        DestroyPlayerObject();
 
         yield return endWaitTime;
     }
@@ -209,13 +211,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void DestroyPlayer()
+    void DestroyPlayerObject()
     {
         var playerInstance = FindObjectOfType<PlayerClass>();
 
         if (playerInstance != null)
         {
             Destroy(playerInstance);
+
+            print("[GameManager] DestroyPlayer() player destroyed");
+
+            if (playerInstance != null)
+            {
+                Debug.LogError("[GameManager] DestroyPlayer() playerInstance was not destroyed");
+            }    
         }
         else
         {
