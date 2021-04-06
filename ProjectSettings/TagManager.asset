@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - wp
+  - gold
+  - enemy
+  - waypoint
+  - hide
   layers:
   - Default
   - TransparentFX
