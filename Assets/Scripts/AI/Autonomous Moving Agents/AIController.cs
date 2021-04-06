@@ -2,15 +2,16 @@ using System.Collections;
 using UnityEngine;
 
 public class AIController : MonoBehaviour
-{
-    enum stateSelection
+{    
+    public enum stateSelection
     {
-        KeepAwayState, StalkState, FleeState, SeekState, IdleState, PursueState, EvadeState, WanderState, HideState
+        KeepAwayState, FleeState, SeekState, IdleState, WanderState, HideState
+        // PursueState, EvadeState, StalkState
     }
 
     [SerializeField] stateSelection selectedState;
     [SerializeField] float delayAIcalculation = 1f;
-    [SerializeField] bool botActive = true;
+    [SerializeField] bool manualControl = true;
     [SerializeField] float coolDownDelay = 5f;
     [SerializeField] float rightAngle = 90f;
     [SerializeField] float playerAngleConeView = 90f;
@@ -54,13 +55,35 @@ public class AIController : MonoBehaviour
 
     IEnumerator Start()
     {
-        while (botActive)
+        if (currentState != stateSelection.IdleState)
         {
-            yield return UpdateAIBrain();
+            Debug.LogWarning("[AIController] other than IdleState is selected at Start");
+        }
+
+        while (manualControl)
+        {
+                yield return UpdateAIStateOnce();
+        }
+
+        while (!manualControl)
+        {
+            print("[AIController] Started Automatic routine");
+            
+            selectedState = stateSelection.SeekState;
+            StartCoroutine(UpdateAIStateOnce());
+            yield return new WaitForSeconds(delayAIcalculation * 5);
+
+            selectedState = stateSelection.IdleState;
+            StartCoroutine(UpdateAIStateOnce());
+            yield return new WaitForSeconds(delayAIcalculation * 5);
+
+            selectedState = stateSelection.KeepAwayState;
+            StartCoroutine(UpdateAIStateOnce());
+            yield return new WaitForSeconds(delayAIcalculation * 10);
         }
     }
 
-    IEnumerator UpdateAIBrain()
+    IEnumerator UpdateAIStateOnce()
     {
         currentState = selectedState;
 
@@ -79,16 +102,16 @@ public class AIController : MonoBehaviour
             if (IdleStateEntryEvent != null)
                 IdleStateEntryEvent();
         }
-        else if (currentState == stateSelection.PursueState)
-        {
-            if (PursueStateEntryEvent != null)
-                PursueStateEntryEvent();
-        }
-        else if (currentState == stateSelection.EvadeState)
-        {
-            if (EvadeStateEntryEvent != null)
-                EvadeStateEntryEvent();
-        }
+ //       else if (currentState == stateSelection.PursueState)
+ //       {
+ //           if (PursueStateEntryEvent != null)
+ //               PursueStateEntryEvent();
+ //       }
+ //       else if (currentState == stateSelection.EvadeState)
+ //       {
+ //           if (EvadeStateEntryEvent != null)
+ //               EvadeStateEntryEvent();
+ //       }
         else if (currentState == stateSelection.WanderState)
         {
             if (WanderStateEntryEvent != null)
@@ -99,11 +122,11 @@ public class AIController : MonoBehaviour
             if (HideStateEntryEvent != null)
                 HideStateEntryEvent();
         }
-        else if (currentState == stateSelection.StalkState)
-        {
-            if (StalkStateEntryEvent != null)
-                StalkStateEntryEvent();
-        }
+//        else if (currentState == stateSelection.StalkState)
+//        {
+//            if (StalkStateEntryEvent != null)
+//                StalkStateEntryEvent();
+//        }
         else if (currentState == stateSelection.KeepAwayState)
         {
             if (KeepAwayStateEntryEvent != null)

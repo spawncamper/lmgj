@@ -10,7 +10,7 @@ public class Bot : MonoBehaviour
         FleeState, SeekState, IdleState, PursueState, EvadeState, WanderState, HideState, StalkState, KeepAwayState
     }   
 
-    [SerializeField] GameObject target;
+    GameObject target;
 
     Vector3 selectedHidingSpot = Vector3.zero;
     Vector3 wanderTarget = Vector3.zero;
@@ -31,6 +31,7 @@ public class Bot : MonoBehaviour
         AIController.HideStateEntryEvent += HideEntry;
         AIController.StalkStateEntryEvent += StalkEntry;
         AIController.KeepAwayStateEntryEvent += KeepAwayEntry;
+        GameManager.PlayerSpawnedEvent += PlayerSpawned;
     }
 
     void OnDisable()
@@ -44,12 +45,13 @@ public class Bot : MonoBehaviour
         AIController.HideStateEntryEvent -= HideEntry;
         AIController.StalkStateEntryEvent -= StalkEntry;
         AIController.KeepAwayStateEntryEvent -= KeepAwayEntry;
+        GameManager.PlayerSpawnedEvent -= PlayerSpawned;
     }
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        playerDrive = target.GetComponent<Drive>();
+//        playerDrive = target.GetComponent<Drive>();
     }
 
     private void Start()
@@ -269,7 +271,7 @@ public class Bot : MonoBehaviour
             }
             else
             {
-                Pursue(location);
+                Seek(location);
             }
         }
     }
@@ -280,13 +282,13 @@ public class Bot : MonoBehaviour
         UpdateBotBrain(stateSelection.KeepAwayState);
     }
 
-    void KeepAway(Vector3 location)
+    void KeepAway(Vector3 location) /// Flee instead of Evade
     {
         float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 
         if (distanceToTarget < AIController.ReturnFleeDistance())
         {
-            Evade(location);
+            Flee(location);
         }
         else
         {
@@ -325,5 +327,16 @@ public class Bot : MonoBehaviour
     void BehaviorCoolDown()
     {
         onCoolDown = false;
+    }
+
+    void PlayerSpawned()
+    {
+        target = GameObject.FindGameObjectWithTag("Player");
+
+        if (target == null)
+        {
+            Debug.LogWarning("[Bot] PlayerSpawned() on gameObject" + gameObject.name + "target == null");
+        }
+//        target = player;
     }
 }
