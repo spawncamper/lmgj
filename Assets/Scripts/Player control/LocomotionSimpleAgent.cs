@@ -6,17 +6,17 @@ public class LocomotionSimpleAgent : MonoBehaviour
 {
 	[SerializeField] bool isPlayer;
 
-	Animator anim;
+	Animator animator;
 	UnityEngine.AI.NavMeshAgent agent;
 	Vector2 smoothDeltaPosition = Vector2.zero;
 	Vector2 velocity = Vector2.zero;
 
-	void Start () 
+	void Start()
 	{
-		anim = GetComponent<Animator> ();
-		agent = GetComponent<UnityEngine.AI.NavMeshAgent> ();
+		animator = GetComponent<Animator>();
+		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 		agent.updatePosition = false;
-        anim.SetBool("dead", false);
+		animator.SetBool("dead", false); print("[LocomotionSimpleAgent] Start()" + gameObject.name + "set dead bool false in Animator");
 	}
 	
 	void Update () 
@@ -39,15 +39,16 @@ public class LocomotionSimpleAgent : MonoBehaviour
 		bool shouldMove = velocity.magnitude > 0.5f && agent.remainingDistance > agent.radius;
 
 			// Update animation parameters
-			anim.SetBool("move", shouldMove);
-			anim.SetFloat("velx", velocity.x);
-			anim.SetFloat("vely", velocity.y);
+			animator.SetBool("move", shouldMove);
+		//			animator.SetFloat("velx", velocity.x);
+		//			animator.SetFloat("vely", velocity.y);
 
+		UpdateAnimator();
 
 		// Update animation parameters		
-		//		LookAt lookAt = GetComponent<LookAt> ();
-		//		if (lookAt)
-		//			lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
+//				LookAt lookAt = GetComponent<LookAt> ();
+//		if (lookAt)
+//			lookAt.lookAtTargetPosition = agent.steeringTarget;// + transform.forward;
 
 		//		// Pull character towards agent
 		//		if (worldDeltaPosition.magnitude > agent.radius)
@@ -58,6 +59,13 @@ public class LocomotionSimpleAgent : MonoBehaviour
 		//			agent.nextPosition = transform.position + 0.9f*worldDeltaPosition;
 	}
 
+	private void UpdateAnimator()
+	{
+		//       Debug.Log(agent.velocity.magnitude);
+		// ForwardSpeed is the Animator parameter, 
+		animator.SetFloat("ForwardSpeed", agent.velocity.magnitude / agent.speed);
+	}
+
 	void OnAnimatorMove () 
 	{
 		if (agent != null)
@@ -65,10 +73,9 @@ public class LocomotionSimpleAgent : MonoBehaviour
 			// Update postion to agent position
 			transform.position = agent.nextPosition;
 		}
-
 		// Update position based on animation movement using navigation surface height
-//		Vector3 position = anim.rootPosition;
-//		position.y = agent.nextPosition.y;
-//		transform.position = position;
+		//		Vector3 position = anim.rootPosition;
+		//		position.y = agent.nextPosition.y;
+		//		transform.position = position;
 	}
 }
