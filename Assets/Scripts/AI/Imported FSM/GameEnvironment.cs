@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq; // Added since we need to use 'OrderBy' to sort waypoint sequence.
 
@@ -23,7 +22,7 @@ public sealed class GameEnvironment
             {
                 instance = new GameEnvironment();
                 instance.Checkpoints.AddRange(
-                    GameObject.FindGameObjectsWithTag("Checkpoint"));
+                    GameObject.FindGameObjectsWithTag("waypoint"));
 
                 instance.checkpoints = instance.checkpoints.OrderBy(waypoint => waypoint.name).ToList(); // Order waypoints in ascending alphabetical order by name, so that the NPC follows them correctly.
             }
